@@ -5,16 +5,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Components/Src/PID_controller.c \
 ../Components/Src/Servo.c \
 ../Components/Src/hcsr04_sensor.c \
 ../Components/Src/pwm.c 
 
 OBJS += \
+./Components/Src/PID_controller.o \
 ./Components/Src/Servo.o \
 ./Components/Src/hcsr04_sensor.o \
 ./Components/Src/pwm.o 
 
 C_DEPS += \
+./Components/Src/PID_controller.d \
 ./Components/Src/Servo.d \
 ./Components/Src/hcsr04_sensor.d \
 ./Components/Src/pwm.d 
@@ -27,7 +30,7 @@ Components/Src/%.o Components/Src/%.su Components/Src/%.cyclo: ../Components/Src
 clean: clean-Components-2f-Src
 
 clean-Components-2f-Src:
-	-$(RM) ./Components/Src/Servo.cyclo ./Components/Src/Servo.d ./Components/Src/Servo.o ./Components/Src/Servo.su ./Components/Src/hcsr04_sensor.cyclo ./Components/Src/hcsr04_sensor.d ./Components/Src/hcsr04_sensor.o ./Components/Src/hcsr04_sensor.su ./Components/Src/pwm.cyclo ./Components/Src/pwm.d ./Components/Src/pwm.o ./Components/Src/pwm.su
+	-$(RM) ./Components/Src/PID_controller.cyclo ./Components/Src/PID_controller.d ./Components/Src/PID_controller.o ./Components/Src/PID_controller.su ./Components/Src/Servo.cyclo ./Components/Src/Servo.d ./Components/Src/Servo.o ./Components/Src/Servo.su ./Components/Src/hcsr04_sensor.cyclo ./Components/Src/hcsr04_sensor.d ./Components/Src/hcsr04_sensor.o ./Components/Src/hcsr04_sensor.su ./Components/Src/pwm.cyclo ./Components/Src/pwm.d ./Components/Src/pwm.o ./Components/Src/pwm.su
 
 .PHONY: clean-Components-2f-Src
 

@@ -1,3 +1,4 @@
+"./Components/Src/PID_controller.o"
 "./Components/Src/Servo.o"
 "./Components/Src/hcsr04_sensor.o"
 "./Components/Src/pwm.o"

@@ -25,7 +25,7 @@
 #include "stdlib.h"
 #include "stm32f7xx_hal.h"
 #include "hcsr04_sensor.h"
-
+#include "PID_controller.h"
 
 /* USER CODE END Includes */
 
@@ -141,7 +141,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HCSR04_Init();
   SERVO_Init(&hservo1);
-  SERVO_WritePosition(&hservo1, 90.0f);
+  SERVO_WritePosition(&hservo1, 130.0f);
  HAL_UART_Receive_IT(&huart3, tx_buffer, tx_msg_len);
   /* USER CODE END 2 */
 
@@ -155,6 +155,7 @@ int main(void)
       dx_cm = HCSR04_sensor.distance_cm;  //the distance in cm.
 
       HAL_Delay(500);
+      PID(&HCSR04_sensor,&hservo1);
       /*SERVO_WritePosition(&hservo1, 180.0f);
       HAL_Delay(1000);
       SERVO_WritePosition(&hservo1, 90.0f);

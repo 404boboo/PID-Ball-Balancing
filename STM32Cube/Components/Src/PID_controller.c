@@ -8,7 +8,7 @@
  double kp = 10;
  double ki = 0.038;
  double kd = 500;
-void PID(hcsr04_data_t* Sensor ,SERVO_Handle_TypeDef* servo )
+/*void PID(hcsr04_data_t* Sensor ,SERVO_Handle_TypeDef* servo )
 {
 	int setP = 30;
 	static double priError = 0;
@@ -24,4 +24,4 @@ void PID(hcsr04_data_t* Sensor ,SERVO_Handle_TypeDef* servo )
 	toError += error;//total error{IValue}
 	SERVO_WritePosition(servo, PIDvalue);
 }
-
+*/

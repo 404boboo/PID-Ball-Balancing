@@ -1,6 +1,5 @@
-Components/Src/PID_controller.o: ../Components/Src/PID_controller.c \
- C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/PID_controller.h \
- C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h \
+Components/Src/hcsr04_conf.o: ../Components/Src/hcsr04_conf.c \
+ C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/HCSR04_userConf.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
  ../Core/Inc/stm32f7xx_hal_conf.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h \
@@ -31,10 +30,8 @@ Components/Src/PID_controller.o: ../Components/Src/PID_controller.c \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h \
- C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/Servo.h \
- C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/pwm.h
-C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/PID_controller.h:
-C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h:
+ C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h
+C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/HCSR04_userConf.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h:
@@ -65,5 +62,4 @@ C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h:
-C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/Servo.h:
-C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/pwm.h:
+C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h:

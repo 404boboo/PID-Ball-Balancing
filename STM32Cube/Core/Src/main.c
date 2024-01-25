@@ -140,6 +140,8 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+
+  // Start Sensor 1 & 2
   hc_sr04_init(&distance_sensor, &htim1, &htim2, TIM_CHANNEL_3);
   hc_sr04_init(&distance_sensor2, &htim3, &htim2, TIM_CHANNEL_3);
 
@@ -626,7 +628,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 	if(TIM1 == htim->Instance)
 	{
 		uint32_t echo_us;
-
+          // Convert and Assign distance
 		echo_us = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
 		dx_cm = distance_sensor.distance_cm = hc_sr04_convert_us_to_cm(echo_us);
 	}
@@ -634,7 +636,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 	if(TIM3 == htim->Instance)
 	{
 		uint32_t echo_us;
-
+        // Convert and Assign distance
 		echo_us = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
 		dx_cm2 = distance_sensor.distance_cm = hc_sr04_convert_us_to_cm(echo_us);
 	}

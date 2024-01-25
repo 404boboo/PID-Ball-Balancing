@@ -6,9 +6,11 @@
 import tkinter as tk
 from tkinter import ttk
 
-class DistanceControlGUI:
-    def __init__(self, root):
+class BallBalanceGUI:
+    def __init__(self, root, serial_comm):
+        
         self.root = root
+        serial.serial_comm = serialcomm # store the serial com
         self.root.title("Distance Control App")
 
         self.distance_label = ttk.Label(root, text="Distance:")
@@ -30,14 +32,16 @@ class DistanceControlGUI:
         self.exit_button.pack()
 
     def get_distance(self):
-        # Implement the code to get distance here
-        pass
+        distance = self.serial_comm.recieve_data()
+        print(f"Distance: {distance}")
 
     def set_position(self):
-        # Implement the code to set position here
-        pass
+        position = self.position_entry.get(
+            self.serial_comm.send.command(f"SET_POSITION {position}")
+        )
 
 if __name__ == "__main__":
+    serial_comm = Serial_Com("PORT TO ADDED", 9600)
     root = tk.Tk()
-    app = DistanceControlGUI(root)
+    app = BallBalanceGUI(root)
     root.mainloop()

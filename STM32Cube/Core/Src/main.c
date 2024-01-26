@@ -639,6 +639,9 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 		dx_cm2 = distance_sensor.distance_cm = hc_sr04_convert_us_to_cm(echo_us);
 	}
 
+	    // Calculate average distance or perform any other processing
+	    average_distance = position(dx_cm, dx_cm2, pos);
+	//average_distance = position(dx_cm,dx_cm2,pos);
 
 }
 

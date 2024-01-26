@@ -9,4 +9,4 @@
 ../Core/Src/main.c:475:13:MX_USART3_UART_Init	2
 ../Core/Src/main.c:510:13:MX_GPIO_Init	1
 ../Core/Src/main.c:624:6:HAL_TIM_IC_CaptureCallback	3
-../Core/Src/main.c:651:6:Error_Handler	1
+../Core/Src/main.c:654:6:Error_Handler	1

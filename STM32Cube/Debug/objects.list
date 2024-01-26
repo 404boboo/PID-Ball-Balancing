@@ -1,6 +1,6 @@
+"./Components/Src/HP_filter.o"
 "./Components/Src/PID_controller.o"
 "./Components/Src/Servo.o"
-"./Components/Src/hcsr04_conf.o"
 "./Components/Src/hcsr04_sensor.o"
 "./Components/Src/pwm.o"
 "./Core/Src/main.o"

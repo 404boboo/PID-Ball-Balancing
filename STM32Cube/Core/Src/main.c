@@ -26,6 +26,9 @@
 #include "stm32f7xx_hal.h"
 #include "hcsr04_sensor.h"
 #include "PID_controller.h"
+#include "HP_filter.h"
+#define BETA_VALUE 0.8 // You can adjust this value based on your application
+
 
 /* USER CODE END Includes */
 
@@ -58,10 +61,10 @@ float tx_us = 0;     // Time in microseconds
 float dx_cm = 0;     // Distance for sensor 1 in centimeters
 float dx_cm2 = 0;     // Distance for sensor 2 in centimeters
 float average_distance = 0.00;
-
+float pos = 0;
 struct us_sensor_str distance_sensor;
 struct us_sensor_str distance_sensor2;
-
+IFX_EMA hpFilter;
 
 
 
@@ -140,7 +143,8 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-
+  //initializing the high pass filter
+  IFX_EMA_Init(&hpFilter, BETA_VALUE);
   // Start Sensor 1 & 2
   hc_sr04_init(&distance_sensor, &htim1, &htim2, TIM_CHANNEL_3);
   hc_sr04_init(&distance_sensor2, &htim3, &htim2, TIM_CHANNEL_3);
@@ -641,7 +645,8 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 		dx_cm2 = distance_sensor.distance_cm = hc_sr04_convert_us_to_cm(echo_us);
 	}
 
-
+	average_distance = position(dx_cm,dx_cm2,pos);
+	float filteredData = IFX_EMA_Update(&hpFilter, average_distance);
 }
 
 /* USER CODE END 4 */

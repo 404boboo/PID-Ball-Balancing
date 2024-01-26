@@ -31,4 +31,19 @@ uint32_t hc_sr04_convert_us_to_cm(uint32_t distance_us)
 {
 	return (distance_us / HC_SR04_US_TO_CM_CONVERTER);
 }
+int position(float dis1, float dis2, float pos)
+{
+ pos = 0;
+if (dis1<29){
+    pos = dis1;
+}
+else if(dis1 >=29 )
+{
+    pos = 60- dis2;
+}
+else if (dis1>= 29 && dis1 <= 31 && dis2 >= 29 && dis2 <= 31){
+    pos = 30;
+}
+return pos;
+}
 /******************************************************END OF FILE*********************************************************************/

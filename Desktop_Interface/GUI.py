@@ -2,7 +2,7 @@
 # Description: Desktop application for user interface using serial communication to communicate with the STM32 board.
 # Author: Ahmed Bouras
 # Date: 25/01/2024
-# Version: 1.3
+# Version: 1.2
 import tkinter as tk
 from tkinter import ttk
 from serial_communication import SerialCommunication
@@ -64,8 +64,8 @@ class BallBalanceGUI:
 
         # Draw the ball at the current position
         ball_radius = 10
-        ball_x = beam_left + position * (beam_length / 60)  # Adjust the scaling factor as needed
-        ball_y = 150 - ball_radius  # Place the ball on top of the beam
+        ball_x = beam_left + position * (beam_length / 60)  # Adjust scaling factor as needed
+        ball_y = 150 - ball_radius  # Place ball on top of the beam
         self.canvas.create_oval(ball_x - ball_radius, ball_y - ball_radius, ball_x + ball_radius,
                                 ball_y + ball_radius, fill="blue")
 
@@ -77,7 +77,7 @@ class BallBalanceGUI:
         self.serial_comm.send_command(f"SET_POSITION {position}")
 
 if __name__ == "__main__":
-    # Replace "COMx" with your actual port, e.g., "COM3"
+    # Replace "x" in "COMx" port, e.g., "COM3"
     serial_comm = SerialCommunication("COM3", 9600)
     
     root = tk.Tk()

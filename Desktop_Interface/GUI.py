@@ -2,7 +2,7 @@
 # Description: Desktop application for user interface using serial communication to communicate with the STM32 board.
 # Author: Ahmed Bouras
 # Date: 25/01/2024
-# Version: 1.9
+# Version: 1.3
 import tkinter as tk
 from tkinter import ttk
 from serial_communication import SerialCommunication
@@ -36,7 +36,7 @@ class BallBalanceGUI:
         self.exit_button = ttk.Button(root, text="Exit", command=root.destroy)
         self.exit_button.pack()
 
-        # Start updating the position every 100 milliseconds
+        # Start updating the position every 1000 milliseconds (1 second)
         self.update_position()
 
     def update_position(self):
@@ -44,50 +44,40 @@ class BallBalanceGUI:
         position = self.serial_comm.receive_data()
 
         # Check if the position is a valid integer
-        try:
-            position_value = int(position)
-        except ValueError:
-            position_value = 0
+        if position.isdigit():
+            position = int(position)
+        else:
+            # Handle the case where position is not a valid integer
+            position = 0
 
-        self.position_label.config(text=f"Position: {position_value} cm")
+        self.position_label.config(text=f"Position: {position} cm")
 
         # Clear previous drawings
         self.canvas.delete("all")
 
         # Draw the beam
-        beam_width = 20
-        beam_length = 500  # Map the beam to be from 0 to 60
-        beam_top_y = 150
-        beam_bottom_y = beam_top_y + beam_width
-        self.canvas.create_rectangle(
-            0, beam_top_y,
-            beam_length, beam_bottom_y,
-            fill="gray"
-        )
+        beam_width = 10
+        beam_length = 300  # Updated beam length
+        beam_center_x = 250  # Updated beam center x-coordinate
+        beam_left = beam_center_x - beam_length / 2
+        self.canvas.create_rectangle(beam_left, 150, beam_left + beam_length, 160 + beam_width, fill="gray")
 
-        # Draw the ball at the current position with a more roundy shape
-        ball_radius = 15
-        ball_aspect_ratio = 0.7  # Adjust the aspect ratio for a more circular appearance
+        # Draw the ball at the current position
+        ball_radius = 10
+        ball_x = beam_left + position * (beam_length / 60)  # Adjust the scaling factor as needed
+        ball_y = 150 - ball_radius  # Place the ball on top of the beam
+        self.canvas.create_oval(ball_x - ball_radius, ball_y - ball_radius, ball_x + ball_radius,
+                                ball_y + ball_radius, fill="blue")
 
-        # Adjust the x-coordinate to center the ball
-        ball_x = (position_value / 60) * (beam_length - 2 * ball_radius) + ball_radius
-        ball_y = beam_top_y + beam_width / 2
-
-        self.canvas.create_oval(
-            ball_x - ball_radius, ball_y - ball_radius,
-            ball_x + ball_radius, ball_y + ball_radius,
-            fill="blue"
-        )
-
-        # Schedule the next update after 100 milliseconds
-        self.root.after(100, self.update_position)
+        # Schedule the next update after 1000 milliseconds
+        self.root.after(1000, self.update_position)
 
     def set_position(self):
         position = self.position_entry.get()
         self.serial_comm.send_command(f"SET_POSITION {position}")
 
 if __name__ == "__main__":
-    # Replace "x" in "COMx" with port, e.g., "COM3"
+    # Replace "COMx" with your actual port, e.g., "COM3"
     serial_comm = SerialCommunication("COM3", 9600)
     
     root = tk.Tk()

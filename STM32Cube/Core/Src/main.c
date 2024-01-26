@@ -644,9 +644,14 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 		echo_us = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
 		dx_cm2 = distance_sensor.distance_cm = hc_sr04_convert_us_to_cm(echo_us);
 	}
+	IFX_EMA_SetBeta(&hpFilter, BETA_VALUE);
+	    float filteredData1 = IFX_EMA_Update(&hpFilter, dx_cm);
+	    float filteredData2 = IFX_EMA_Update(&hpFilter, dx_cm2);
 
-	average_distance = position(dx_cm,dx_cm2,pos);
-	float filteredData = IFX_EMA_Update(&hpFilter, average_distance);
+	    // Calculate average distance or perform any other processing
+	    average_distance = position(filteredData1, filteredData2, pos);
+	//average_distance = position(dx_cm,dx_cm2,pos);
+
 }
 
 /* USER CODE END 4 */

@@ -2,100 +2,91 @@
 # Description: Desktop application for user interface using serial communication to communicate with the STM32 board.
 # Author: Ahmed Bouras
 # Date: 25/01/2024
-# Version: 1.3
+# Version: 1.5
 import tkinter as tk
 from tkinter import ttk
 from serial_communication import SerialCommunication
-from matlab_plotting import RealTimePlot
 
 class BallBalanceGUI:
     def __init__(self, root, serial_comm):
         self.root = root
         self.serial_comm = serial_comm
         self.root.title("Ball Position Control App")
+        self.root.geometry("800x600")
 
-        # Create two frames for two tabs
-        self.tab1 = ttk.Frame(self.root)
-        self.tab2 = ttk.Frame(self.root)
+        self.notebook = ttk.Notebook(root)
 
-        # Add tabs to the main window
-        self.tabs = ttk.Notebook(self.root)
-        self.tabs.add(self.tab1, text='Control Tab')
-        self.tabs.add(self.tab2, text='Graph Tab')
-        self.tabs.pack(expand=1, fill="both")
+        self.control_tab = ttk.Frame(self.notebook)
+        self.matlab_tab = ttk.Frame(self.notebook)
 
-        # Initialize components for each tab
-        self.init_tab1()
-        self.init_tab2()
+        self.notebook.add(self.control_tab, text="Control")
+        self.notebook.add(self.matlab_tab, text="Matlab Plot")
 
-    def init_tab1(self):
-        # Canvas to draw the beam and ball
-        self.canvas = tk.Canvas(self.tab1, width=500, height=300, bg="white")
-        self.canvas.pack()
+        self.notebook.pack(fill='both', expand=True)
 
-        # Position label
-        self.position_label = ttk.Label(self.tab1, text="Position:")
-        self.position_label.pack()
+        # Create control tab elements
+        self.create_control_tab()
+
+    def create_control_tab(self):
+        # Label for position
+        position_label = ttk.Label(self.control_tab, text="Position:")
+        position_label.grid(row=0, column=0, padx=10, pady=10)
 
         # Entry for setting ball position
-        self.position_entry = ttk.Entry(self.tab1)
-        self.position_entry.pack()
+        position_entry = ttk.Entry(self.control_tab)
+        position_entry.grid(row=0, column=1, padx=10, pady=10)
 
         # Button to set position
-        self.set_position_button = ttk.Button(self.tab1, text="Set Position", command=self.set_position)
-        self.set_position_button.pack()
+        set_position_button = ttk.Button(self.control_tab, text="Set Position", command=self.set_position)
+        set_position_button.grid(row=0, column=2, padx=10, pady=10)
+
+        # Canvas to draw the beam and ball
+        self.canvas = tk.Canvas(self.control_tab, width=500, height=300, bg="white")
+        self.canvas.grid(row=1, column=0, columnspan=3, padx=10, pady=10)
 
         # Exit button
-        self.exit_button = ttk.Button(self.tab1, text="Exit", command=self.root.destroy)
-        self.exit_button.pack()
+        exit_button = ttk.Button(self.control_tab, text="Exit", command=self.root.destroy)
+        exit_button.grid(row=2, column=1, pady=10)
 
         # Start updating the position every 1000 milliseconds (1 second)
         self.update_position()
 
-    def init_tab2(self):
-        # Create a separate frame for the live MATLAB plot
-        self.matlab_plot_frame = ttk.Frame(self.tab2)
-        self.matlab_plot_frame.pack(fill=tk.BOTH, expand=True)
-
-        # Initialize the live MATLAB plot
-        self.real_time_plot = RealTimePlot(self.serial_comm, self.matlab_plot_frame)
-
     def update_position(self):
+        # Receive and update position
         position = self.serial_comm.receive_data()
 
+        # Check if the position is a valid integer
         if position.isdigit():
             position = int(position)
         else:
+            # Handle the case where position is not a valid integer
             position = 0
 
-        self.position_label.config(text=f"Position: {position} cm")
-
-        # Clear previous drawings
+        # Clear the canvas
         self.canvas.delete("all")
 
-        # Draw the beam and ball at the current position
-        beam_width = 10
-        beam_length = 300
-        beam_center_x = 250
-        beam_left = beam_center_x - beam_length / 2
-        self.canvas.create_rectangle(beam_left, 150, beam_left + beam_length, 160 + beam_width, fill="gray")
+        # Draw the beam
+        beam_height = 20  # Adjust the beam height as needed
+        self.canvas.create_rectangle(50, 150 - beam_height / 2, 550, 150 + beam_height / 2, fill="black")
 
-        ball_radius = 10
-        ball_x = beam_left + position * (beam_length / 60)
-        ball_y = 150 - ball_radius
-        self.canvas.create_oval(ball_x - ball_radius, ball_y - ball_radius, ball_x + ball_radius,
-                                ball_y + ball_radius, fill="blue")
+        # Draw the ball at the updated position
+        ball_radius = 15  # Adjust the ball radius as needed
+        scaled_position = 50 + (position / 60) * 500  # Adjust the scaling factor as needed
+        self.canvas.create_oval(scaled_position - ball_radius, 150 - ball_radius,
+                                scaled_position + ball_radius, 150 + ball_radius,
+                                fill="red")
 
+        # Schedule the next update after 1000 milliseconds
         self.root.after(1000, self.update_position)
 
     def set_position(self):
-        position = self.position_entry.get()
-        self.serial_comm.send_command(f"SET_POSITION {position}")
+        # Your set position logic goes here
+        pass
 
 if __name__ == "__main__":
     # Replace "x" in "COMx" port, e.g., "COM3"
     serial_comm = SerialCommunication("COM3", 9600)
-    
+
     root = tk.Tk()
     app = BallBalanceGUI(root, serial_comm)
     root.mainloop()

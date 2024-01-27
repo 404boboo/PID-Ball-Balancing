@@ -2,10 +2,11 @@
 # Description: Desktop application for user interface using serial communication to communicate with the STM32 board.
 # Author: Ahmed Bouras
 # Date: 25/01/2024
-# Version: 2.0
+# Version: 2.3
 import tkinter as tk
 from tkinter import ttk
 from serial_communication import SerialCommunication
+from matlab_plotting import RealTimePlot
 
 class BallBalanceGUI:
     def __init__(self, root, serial_comm):
@@ -26,6 +27,9 @@ class BallBalanceGUI:
 
         # Create control tab elements
         self.create_control_tab()
+
+        # Create matlab tab elements
+        self.create_matlab_tab()
 
     def create_control_tab(self):
         # Label for position
@@ -52,6 +56,19 @@ class BallBalanceGUI:
 
         # Start updating the position every 1000 milliseconds (1 second)
         self.update_position(canvas)
+
+    def create_matlab_tab(self):
+        # Create the RealTimePlot object and pass self (BallBalanceGUI) to it
+        self.real_time_plot = RealTimePlot(self, master=self.matlab_tab)
+        self.real_time_plot.pack(fill=tk.BOTH, expand=True)
+
+        # Start the animation in the RealTimePlot object
+        self.real_time_plot.start_animation()
+
+    def update_matlab_tab(self):
+        # Your update logic for the Matlab tab goes here
+        self.real_time_plot.update_animation()
+        self.root.after(100, self.update_matlab_tab)  # Schedule the next update
 
     def update_position(self, canvas):
         # Receive and update position
@@ -98,8 +115,9 @@ class BallBalanceGUI:
 
 if __name__ == "__main__":
     # Replace "x" in "COMx" port, e.g., "COM3"
-    serial_comm = SerialCommunication("COM3", 9600)
+    serial_comm = SerialCommunication("COM3", 115200)
 
     root = tk.Tk()
     app = BallBalanceGUI(root, serial_comm)
+    root.after(100, app.update_matlab_tab)  # Call the update_matlab_tab method after 100 milliseconds
     root.mainloop()

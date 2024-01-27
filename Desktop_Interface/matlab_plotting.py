@@ -2,7 +2,7 @@
 # Description: Real-time Matlab plot animation for the distance control app.
 # Author: Ahmed Bouras
 # Date: 25/01/2024
-# Version: 1.6
+# Version: 1.5
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
@@ -12,10 +12,10 @@ from serial_communication import SerialCommunication
 class RealTimePlot(tk.Frame):
     MAX_FRAMES = 100  # Set a maximum number of frames
 
-    def __init__(self, serial_comm, master=None):
+    def __init__(self, gui, master=None):
         super().__init__(master)
+        self.gui = gui  # Reference to the BallBalanceGUI object
         self.master = master
-        self.serial_comm = serial_comm
         self.create_widgets()
 
     def create_widgets(self):
@@ -38,7 +38,7 @@ class RealTimePlot(tk.Frame):
         self.animation = FuncAnimation(self.fig, self.update, interval=1000, save_count=self.MAX_FRAMES)
 
     def update(self, frame):
-        position = self.serial_comm.receive_data()
+        position = self.gui.serial_comm.receive_data()
         try:
             position = float(position)
         except ValueError:
@@ -58,11 +58,3 @@ class RealTimePlot(tk.Frame):
         self.ax.relim()  # Update limits
         self.ax.autoscale_view()  # Autoscale the view
         self.canvas_widget.draw()
-
-if __name__ == "__main__":
-    # Replace "x" in "COMx" with the actual port, e.g., "COM3"
-    serial_comm = SerialCommunication("COM3", 9600)
-    root = tk.Tk()
-    real_time_plot = RealTimePlot(serial_comm, master=root)
-    real_time_plot.pack(fill=tk.BOTH, expand=True)
-    root.mainloop()

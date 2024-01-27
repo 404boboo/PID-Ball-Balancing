@@ -1,4 +1,9 @@
-from gui import BallBalanceGUI
+# File: main.py
+# Description: Main file for the PID Ball Balancing Desktop Interface.
+# Author: Ahmed Bouras
+# Date: 27/01/2024
+
+from GUI import BallBalanceGUI
 from serial_communication import SerialCommunication
 
 if __name__ == "__main__":

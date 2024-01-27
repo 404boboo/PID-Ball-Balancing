@@ -130,7 +130,7 @@ void LCD_I2C_Init(LCD_I2C_HandleTypeDef* hlcd)
 
   __lcd_i2c_write_command(hlcd, LCD_CLEAR_DISPLAY);                      // Clear screen
   __lcd_delay(hlcd->Timer, 1.6);                                         // > 1.52 ms
-  __lcd_i2c_write_command(hlcd, LCD_DISPLAY_ON_OFF_CONTROL | LCD_OPT_D | LCD_OPT_B); // LCD on, Cursor off, On blink
+  __lcd_i2c_write_command(hlcd, LCD_DISPLAY_ON_OFF_CONTROL | LCD_OPT_D); // LCD on, Cursor off, On blink
   __lcd_i2c_write_command(hlcd, LCD_ENTRY_MODE_SET | LCD_OPT_INC);       // Cursor increment on
 }
 

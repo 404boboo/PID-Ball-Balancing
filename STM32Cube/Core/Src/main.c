@@ -57,7 +57,7 @@ float tx_us = 0;     // Time in microseconds
 float dx_cm = 0;     // Distance for sensor 1 in centimeters
 float dx_cm2 = 0;     // Distance for sensor 2 in centimeters
 float position = 0.00; // Position of the ball
-
+extern setP = 30;
 
 unsigned char character;
 unsigned int user_len= 2;
@@ -169,8 +169,9 @@ int main(void)
   LCD_I2C_SetCursor(&hlcd3, 1, 14);
   LCD_I2C_printStr(&hlcd3, "cm");
 
-  //LCD_I2C_SetCursor(&hlcd3, 1, 11);
-  //LCD_I2C_printDecInt(&hlcd3, setP);
+  LCD_I2C_SetCursor(&hlcd3, 1, 11);
+//  __lcd_i2c_write_command(&hlcd3, LCD_OPT_B);
+  LCD_I2C_printDecInt(&hlcd3, setP);
 
   HAL_UART_Receive_IT(&huart3, &character, 1);
   /* USER CODE END 2 */

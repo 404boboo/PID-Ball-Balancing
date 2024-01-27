@@ -2,6 +2,7 @@
   ******************************************************************************
   * @file    lcd_config.c
   * @author  Konrad Marchewka
+  * @author   : AW    Adrian.Wojcik@put.poznan.pl
   * @version V1.0
   * @date    23-Jan-2024
   * @brief   Simple HD44780 driver library for STM32F7 configuration file.
@@ -28,3 +29,4 @@ LCD_I2C_HandleTypeDef hlcd3 = {
     .Timer = &htim7
 };
 
+// Additional configuration or comments can be added here

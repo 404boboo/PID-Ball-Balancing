@@ -2,9 +2,10 @@
   ******************************************************************************
   * @file     : lcd.h
   * @author   : Olivier Van den Eede [ https://github.com/4ilo/HD44780-Stm32HAL ]
+  * @author  Konrad Marchewka
   * @author   : AW    Adrian.Wojcik@put.poznan.pl
-  * @version  : 3.0
-  * @date     : 10-Jun-2018
+  * @version V1.0
+  * @date    23-Jan-2024
   * @brief    : Simple HD44780 driver library for STM32F7.
   *             NOTE!: This code provides only WRITE features, no READ features.
   ******************************************************************************

@@ -21,6 +21,7 @@ extern "C" {
 #define MAX_SENSORS 2  // MAX number of sensors
 typedef uint32_t TIM_Channel;
 
+
 /**
   * @brief  The sensor data and configurations structures
   */
@@ -55,7 +56,13 @@ void hc_sr04_init(struct us_sensor_str *us_sensor, TIM_HandleTypeDef *htim_echo,
 */
 uint32_t hc_sr04_convert_us_to_cm(uint32_t distance_us);
 
-int position(float dis1, float dis2, float pos);
+
+/**
+*@brief: Calculate the position of the ball depending on two sensors
+*@param:
+*@retval: None
+*/
+float CalulatePosition(float dis1, float dis2);
 
 #ifdef __cplusplus
 }

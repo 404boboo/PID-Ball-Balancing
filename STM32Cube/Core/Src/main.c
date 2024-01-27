@@ -56,14 +56,14 @@
 float tx_us = 0;     // Time in microseconds
 float dx_cm = 0;     // Distance for sensor 1 in centimeters
 float dx_cm2 = 0;     // Distance for sensor 2 in centimeters
-float average_distance = 0.00;
-float pos = 0;
+float position = 0.00; // Position of the ball
+
 
 unsigned char character;
 unsigned int user_len= 2;
 unsigned int i = 0;
 char text[1];
-char array[3];
+char num;
 
 struct us_sensor_str distance_sensor;
 struct us_sensor_str distance_sensor2;
@@ -101,9 +101,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	SERVO_WritePosition(&hservo1, 180 - strtol((char*)tx_buffer, 0, 10));
     HAL_UART_Receive_IT(&huart3, tx_buffer, tx_msg_len);
 
-    text[i] = character;
-    i = (i >= user_len - 1)? 0 :(i+1);
-    HAL_UART_Receive_IT(&huart3, &character, 1);
+
+   // HAL_UART_Receive_IT(&huart3, &character, 1);
+
   }
 }
 /* USER CODE END 0 */
@@ -153,7 +153,8 @@ int main(void)
   SERVO_WritePosition(&hservo1, 130.0f);
  HAL_UART_Receive_IT(&huart3, tx_buffer, tx_msg_len);
 
- //LCD display
+
+ //LCD constant display - Position, Set Position
   LCD_I2C_Init(&hlcd3);
   LCD_I2C_SetCursor(&hlcd3, 0, 0);
   LCD_I2C_printStr(&hlcd3, "Position: ");
@@ -168,6 +169,8 @@ int main(void)
   LCD_I2C_SetCursor(&hlcd3, 1, 14);
   LCD_I2C_printStr(&hlcd3, "cm");
 
+  //LCD_I2C_SetCursor(&hlcd3, 1, 11);
+  //LCD_I2C_printDecInt(&hlcd3, setP);
 
   HAL_UART_Receive_IT(&huart3, &character, 1);
   /* USER CODE END 2 */
@@ -176,6 +179,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  LCD_I2C_SetCursor(&hlcd3, 0, 10);
+	  LCD_I2C_printDecInt(&hlcd3, (int)position);
+
+	 // LCD_I2C_printStr(&hlcd3, text);
+	  HAL_Delay(100);
 
     /* USER CODE END WHILE */
 
@@ -260,8 +268,8 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 	}
 
 	    // Calculate average distance or perform any other processing
-	    average_distance = position(dx_cm, dx_cm2, pos);
-	//average_distance = position(dx_cm,dx_cm2,pos);
+	    position = CalulatePosition(dx_cm, dx_cm2);
+	//position = position(dx_cm,dx_cm2,pos);
 
 }
 

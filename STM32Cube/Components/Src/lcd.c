@@ -2,6 +2,7 @@
   ******************************************************************************
   * @file     : lcd.c
   * @author  Konrad Marchewka
+  * @author   : AW    Adrian.Wojcik@put.poznan.pl
   * @version V1.0
   * @date    23-Jan-2024
   * @brief    : Simple HD44780 driver library for STM32F7.
@@ -17,7 +18,7 @@
 /* Typedef -------------------------------------------------------------------*/
 
 /* Define --------------------------------------------------------------------*/
-#define LCD_NUMBER_BUF_SIZE 21
+#define LCD_NUMBER_BUF_SIZE 2
 #define LCD_PRINTF_BUF_SIZE 64
 #define MAX_MESSAGE_LENGTH 4
 
@@ -147,7 +148,10 @@ void LCD_I2C_printCustomChar(LCD_I2C_HandleTypeDef* hlcd, uint8_t code) {
 void LCD_I2C_printDecInt(LCD_I2C_HandleTypeDef* hlcd, int number)
 {
   char buffer[LCD_NUMBER_BUF_SIZE];
-  sprintf(buffer, "%d", number);
+  if( number >= 10)
+      sprintf(buffer, "%d", number);
+  else
+	  sprintf(buffer, "0%d", number);
 
   LCD_I2C_printStr(hlcd, buffer);
 }

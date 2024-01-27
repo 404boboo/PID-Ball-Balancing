@@ -5,10 +5,11 @@
  *      Author: yazed almazroua
  */
 #include "PID_controller.h"
+#include "hcsr04_sensor.h"
  double kp = 10;
  double ki = 0.038;
  double kd = 500;
-/*void PID(hcsr04_data_t* Sensor ,SERVO_Handle_TypeDef* servo )
+/*void PID(us_sensor_str* Sensor ,SERVO_Handle_TypeDef* servo )
 {
 	int setP = 30;
 	static double priError = 0;

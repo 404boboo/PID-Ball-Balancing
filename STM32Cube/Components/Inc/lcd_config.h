@@ -1,9 +1,10 @@
 /**
   ******************************************************************************
   * @file    lcd_config.h
-  * @author  AW
-  * @version V2.0
-  * @date    30-Oct-2020
+  * @author  Konrad Marchewka
+  * @author   : AW    Adrian.Wojcik@put.poznan.pl
+  * @version V1.0
+  * @date    23-Jan-2024
   * @brief   Simple HD44780 driver library for STM32F7 configuration file.
   *
   ******************************************************************************

@@ -18,6 +18,10 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "i2c.h"
+#include "tim.h"
+#include "usart.h"
+#include "dma.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -26,6 +30,9 @@
 #include "stm32f7xx_hal.h"
 #include "hcsr04_sensor.h"
 #include "PID_controller.h"
+#include "lcd_config.h"
+#include <stdio.h>
+#include <string.h>
 
 /* USER CODE END Includes */
 
@@ -59,6 +66,7 @@ float dx_cm = 0;     // Distance for sensor 1 in centimeters
 float dx_cm2 = 0;     // Distance for sensor 2 in centimeters
 float average_distance = 0.00;
 float pos = 0;
+int setP = 30;
 struct us_sensor_str distance_sensor;
 struct us_sensor_str distance_sensor2;
 
@@ -70,6 +78,12 @@ const int tx_msg_len = 3;
 
 
 /* USER CODE END PV */
+
+unsigned char character;
+unsigned int user_len= 4;
+unsigned int i = 0;
+char text[3];
+char array[3];
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
@@ -94,6 +108,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   * @param  huart UART handle.
   * @retval None
   */
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
   if(huart == &huart3)
@@ -101,6 +116,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	SERVO_WritePosition(&hservo1, 180 - strtol((char*)tx_buffer, 0, 10));
     HAL_UART_Receive_IT(&huart3, tx_buffer, tx_msg_len);
   }
+  text[i] = character;
+    i = (i >= user_len - 1)? 0 :(i+1);
+    HAL_UART_Receive_IT(&huart3, &character, 1);
 }
 /* USER CODE END 0 */
 
@@ -144,14 +162,80 @@ int main(void)
   hc_sr04_init(&distance_sensor2, &htim3, &htim2, TIM_CHANNEL_3);
 
   SERVO_Init(&hservo1);
-  SERVO_WritePosition(&hservo1, 130.0f);
- HAL_UART_Receive_IT(&huart3, tx_buffer, tx_msg_len);
+  SERVO_WritePosition(&hservo1, 30.0f);
+
+ uint8_t begining[] = {
+      0B11000,
+        0B11110,
+        0B11110,
+        0B11000,
+        0B11000,
+        0B11110,
+        0B11110,
+        0B11000};
+
+  uint8_t end[] = {
+      0B00011,
+        0B00011,
+        0B00011,
+        0B00011,
+        0B00011,
+        0B00011,
+        0B00011,
+        0B00011};
+
+  uint8_t Ball[] = {
+      0B00000,
+       0B00000,
+       0B01110,
+       0B11111,
+       0B11011,
+       0B11111,
+       0B01110,
+       0B00000};
+
+
+  LCD_I2C_Init(&hlcd3);
+  LCD_I2C_printStr(&hlcd3, "Position: ");
+
+  LCD_I2C_DefineChar(&hlcd3, 1, begining);
+  LCD_I2C_DefineChar(&hlcd3, 2, end);
+  LCD_I2C_DefineChar(&hlcd3, 3, Ball);
+
+  //LCD_I2C_SetCursor(&hlcd3, 1, 0);
+  //LCD_I2C_printCustomChar(&hlcd3, 1);
+
+  //LCD_I2C_SetCursor(&hlcd3, 1, 15);
+  //LCD_I2C_printCustomChar(&hlcd3, 2);
+
+  //LCD_I2C_SetCursor(&hlcd3, 1, 2);
+  //LCD_I2C_printCustomChar(&hlcd3, 3);
+
+  LCD_I2C_SetCursor(&hlcd3, 0, 14);
+  LCD_I2C_printStr(&hlcd3, "cm");
+
+  HAL_UART_Receive_IT(&huart3, &character, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+
+//	  if(text[0] != '\0'){
+//	       //char padWithZeros(text, 4);
+//
+//	            LCD_I2C_SetCursor(&hlcd3, 0, 10);
+//	            LCD_I2C_printf(&hlcd3, text, "%04d");
+//
+//	            //LCD_I2C_SetCursor(&hlcd3, 1, 8);
+//	           /// LCD_I2C_printf(&hlcd3,"%.1f", asshol);
+//	           // LCD_I2C_SetCursor(&hlcd3, 1, position); //Second line ball position
+//	           // LCD_I2C_printCustomChar(&hlcd3, 3);
+//
+//	      }
+//	       HAL_Delay(100);
 
     /* USER CODE END WHILE */
 
@@ -416,6 +500,18 @@ static void MX_TIM3_Init(void)
 }
 
 /**
+  * @brief TIM7 Initialization Function
+  * @param None
+  * @retval None
+  */
+
+  /* USER CODE BEGIN TIM7_Init 2 */
+
+  /* USER CODE END TIM7_Init 2 */
+
+
+
+/**
   * @brief TIM9 Initialization Function
   * @param None
   * @retval None
@@ -616,6 +712,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
   HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : PB8 PB9 */
+  GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
 }
@@ -641,6 +745,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 
 	    // Calculate average distance or perform any other processing
 	    average_distance = position(dx_cm, dx_cm2, pos);
+	    PID(&hservo1,average_distance,setP);
 	//average_distance = position(dx_cm,dx_cm2,pos);
 
 }

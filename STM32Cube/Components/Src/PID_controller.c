@@ -8,12 +8,12 @@
  double kp = 10;
  double ki = 0.038;
  double kd = 500;
-/*void PID(hcsr04_data_t* Sensor ,SERVO_Handle_TypeDef* servo )
+void PID(SERVO_Handle_TypeDef* servo,float average_distance , int setP)
 {
-	int setP = 30;
+
 	static double priError = 0;
 	static double toError = 0;
-	float dis = Sensor->distance_cm;
+	float dis = average_distance;
 	float error = setP - dis;
 	//calculating PID values
 	double Pvalue = error * kp;
@@ -24,4 +24,4 @@
 	toError += error;//total error{IValue}
 	SERVO_WritePosition(servo, PIDvalue);
 }
-*/
+

@@ -27,22 +27,25 @@ void hc_sr04_init(struct us_sensor_str *us_sensor, TIM_HandleTypeDef *htim_echo,
 	HAL_TIM_PWM_Start(us_sensor->htim_trig, us_sensor->trig_channel);
 }
 
-uint32_t hc_sr04_convert_us_to_cm(uint32_t distance_us)
+float hc_sr04_convert_us_to_cm(float distance_us)
 {
 	return (distance_us / HC_SR04_US_TO_CM_CONVERTER);
 }
-int position(float dis1, float dis2, float pos)
+float position(float dis1, float dis2, float pos)
 {
  pos = 0;
 if (dis1<29){
     pos = dis1;
 }
-else if(dis1 >=29 )
+else if(dis1 >29 )
 {
     pos = 60- dis2;
 }
-else if (dis1>= 29 && dis1 <= 31 && dis2 >= 29 && dis2 <= 31){
-    pos = 30;
+else if (dis1>= 29 && dis1 <= 30 && dis2 >= 29 && dis2 <= 30 && dis1>dis2){
+    pos = 26;
+}
+else if(dis1>= 29 && dis1 <= 30 && dis2 >= 29 && dis2 <= 30 && dis1<dis2){
+	pos = 34;
 }
 return pos;
 }

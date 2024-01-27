@@ -55,12 +55,13 @@ UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
 float tx_us = 0;     // Time in microseconds
-float dx_cm = 0;     // Distance for sensor 1 in centimeters
-float dx_cm2 = 0;     // Distance for sensor 2 in centimeters
-float average_distance = 0.00;
-float pos = 0;
+float dx_cm = 0.0f;     // Distance for sensor 1 in centimeters
+float dx_cm2 = 0.0f;     // Distance for sensor 2 in centimeters
+int average_distance = 0.00;
+float pos = 0.0f;
 struct us_sensor_str distance_sensor;
 struct us_sensor_str distance_sensor2;
+int setP = 42;
 
 
 SERVO_Handle_TypeDef hservo1 = { .PwmOut = PWM_INIT_HANDLE(&htim9, TIM_CHANNEL_1) };
@@ -144,7 +145,7 @@ int main(void)
   hc_sr04_init(&distance_sensor2, &htim3, &htim2, TIM_CHANNEL_3);
 
   SERVO_Init(&hservo1);
-  SERVO_WritePosition(&hservo1, 130.0f);
+  SERVO_WritePosition(&hservo1, 0.0f);
  HAL_UART_Receive_IT(&huart3, tx_buffer, tx_msg_len);
   /* USER CODE END 2 */
 
@@ -152,6 +153,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	    PID(&hservo1,average_distance,setP);
+
 
     /* USER CODE END WHILE */
 
@@ -641,6 +644,8 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 
 	    // Calculate average distance or perform any other processing
 	    average_distance = position(dx_cm, dx_cm2, pos);
+	    PID(&hservo1,average_distance,setP);
+
 	//average_distance = position(dx_cm,dx_cm2,pos);
 
 }

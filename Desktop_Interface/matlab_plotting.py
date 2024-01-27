@@ -1,4 +1,7 @@
 # File: matlab_plotting.py
+# Description: MATLAB plotting file for the PID Ball Balancing Desktop Interface.
+# Author: Ahmed Bouras
+# Date: 27/01/2024
 
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -30,16 +33,3 @@ class RealTimePlot(tk.Frame):
         # Your existing animation update logic here
         self.line.set_data([position, position], [0, 1])
         return self.line,
-
-# Entry point for testing the plotting
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.title("Test RealTimePlot")
-    app = RealTimePlot(master=root)
-
-    def update_position():
-        app.update_animation(np.random.uniform(0, 60))
-
-    root.after(100, update_position)  # Update position every 100 milliseconds
-
-    app.mainloop()

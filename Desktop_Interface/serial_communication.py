@@ -1,8 +1,8 @@
 # File: serial_communication.py
-# Description: Serial communication for the distance control app.
+# Description: Serial communication file for the PID Ball Balancing Desktop Interface.
 # Author: Ahmed Bouras
-# Date: 25/01/2024
-# Version: 1.0
+# Date: 27/01/2024
+
 import serial
 
 class SerialCommunication:
@@ -19,7 +19,6 @@ class SerialCommunication:
      except Exception as e:
         print(f"Error in receive_data: {e}")
      return ""
-
 
     def close_connection(self):
         self.serial_port.close()

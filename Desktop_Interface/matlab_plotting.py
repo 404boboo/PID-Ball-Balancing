@@ -2,7 +2,7 @@
 # Description: Real-time Matlab plot animation for the distance control app.
 # Author: Ahmed Bouras
 # Date: 25/01/2024
-# Version: 1.3
+# Version: 1.6
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
@@ -10,6 +10,8 @@ from matplotlib.animation import FuncAnimation
 from serial_communication import SerialCommunication
 
 class RealTimePlot(tk.Frame):
+    MAX_FRAMES = 100  # Set a maximum number of frames
+
     def __init__(self, serial_comm, master=None):
         super().__init__(master)
         self.master = master
@@ -29,24 +31,33 @@ class RealTimePlot(tk.Frame):
         self.ax.set_ylabel('Ball Position (cm)')
         self.ax.legend()
 
-    def start_animation(self):
-        self.animation = FuncAnimation(self.fig, self.update, interval=1000)
-        self.after(100, self.update_animation)  # Schedule the first update
+        # Start the animation
+        self.start_animation()
 
-    def update_animation(self):
-        self.animation.event_source.stop()
-        data = self.serial_comm.receive_data()
-        position = int(data) if data.isdigit() else 0
-        self.x_data.append(len(self.x_data))
-        self.y_data.append(position)
-        self.line.set_data(self.x_data, self.y_data)
-        self.canvas_widget.draw()
-        self.animation.event_source.start()
-        self.after(1000, self.update_animation)  # Schedule the next update
+    def start_animation(self):
+        self.animation = FuncAnimation(self.fig, self.update, interval=1000, save_count=self.MAX_FRAMES)
 
     def update(self, frame):
-        # This method is not used in this version
-        pass
+        position = self.serial_comm.receive_data()
+        try:
+            position = float(position)
+        except ValueError:
+            position = 0
+
+        # Append current time to x_data
+        self.x_data.append(self.x_data[-1] + 1 if self.x_data else 0)
+        self.y_data.append(position)
+
+        # Trim data if it exceeds MAX_FRAMES
+        if len(self.x_data) > self.MAX_FRAMES:
+            self.x_data.pop(0)
+            self.y_data.pop(0)
+
+        # Update the line data
+        self.line.set_data(self.x_data, self.y_data)
+        self.ax.relim()  # Update limits
+        self.ax.autoscale_view()  # Autoscale the view
+        self.canvas_widget.draw()
 
 if __name__ == "__main__":
     # Replace "x" in "COMx" with the actual port, e.g., "COM3"
@@ -54,5 +65,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     real_time_plot = RealTimePlot(serial_comm, master=root)
     real_time_plot.pack(fill=tk.BOTH, expand=True)
-    real_time_plot.start_animation()
     root.mainloop()

@@ -2,7 +2,7 @@
 # Description: Desktop application for user interface using serial communication to communicate with the STM32 board.
 # Author: Ahmed Bouras
 # Date: 25/01/2024
-# Version: 1.5
+# Version: 2.0
 import tkinter as tk
 from tkinter import ttk
 from serial_communication import SerialCommunication
@@ -41,17 +41,19 @@ class BallBalanceGUI:
         set_position_button.grid(row=0, column=2, padx=10, pady=10)
 
         # Canvas to draw the beam and ball
-        self.canvas = tk.Canvas(self.control_tab, width=500, height=300, bg="white")
-        self.canvas.grid(row=1, column=0, columnspan=3, padx=10, pady=10)
+        canvas_width = 600
+        canvas_height = 300
+        canvas = tk.Canvas(self.control_tab, width=canvas_width, height=canvas_height, bg="white")
+        canvas.place(relx=0.5, rely=0.5, anchor="center")  # Center the canvas in the window
 
         # Exit button
         exit_button = ttk.Button(self.control_tab, text="Exit", command=self.root.destroy)
         exit_button.grid(row=2, column=1, pady=10)
 
         # Start updating the position every 1000 milliseconds (1 second)
-        self.update_position()
+        self.update_position(canvas)
 
-    def update_position(self):
+    def update_position(self, canvas):
         # Receive and update position
         position = self.serial_comm.receive_data()
 
@@ -62,25 +64,36 @@ class BallBalanceGUI:
             # Handle the case where position is not a valid integer
             position = 0
 
-        # Clear the canvas
-        self.canvas.delete("all")
+        # Clear the canvas before drawing
+        canvas.delete("all")
+
+        # Beam dimensions
+        beam_width = 400
+        beam_height = 20
+        beam_color = "blue"
+
+        # Ball dimensions
+        ball_radius = 15
+        ball_color = "red"
 
         # Draw the beam
-        beam_height = 20  # Adjust the beam height as needed
-        self.canvas.create_rectangle(50, 150 - beam_height / 2, 550, 150 + beam_height / 2, fill="black")
+        beam_x1 = canvas.winfo_reqwidth() / 2 - beam_width / 2
+        beam_y1 = canvas.winfo_reqheight() / 2 - beam_height / 2
+        beam_x2 = canvas.winfo_reqwidth() / 2 + beam_width / 2
+        beam_y2 = canvas.winfo_reqheight() / 2 + beam_height / 2
+        canvas.create_rectangle(beam_x1, beam_y1, beam_x2, beam_y2, fill=beam_color)
 
-        # Draw the ball at the updated position
-        ball_radius = 15  # Adjust the ball radius as needed
-        scaled_position = 50 + (position / 60) * 500  # Adjust the scaling factor as needed
-        self.canvas.create_oval(scaled_position - ball_radius, 150 - ball_radius,
-                                scaled_position + ball_radius, 150 + ball_radius,
-                                fill="red")
+        # Draw the ball on top of the beam
+        ball_center_x = canvas.winfo_reqwidth() / 2 + ((position - 30) / 60) * beam_width  # Adjusted calculation
+        ball_center_y = canvas.winfo_reqheight() / 2 - beam_height / 2 - ball_radius
+        canvas.create_oval(ball_center_x - ball_radius, ball_center_y - ball_radius,
+                           ball_center_x + ball_radius, ball_center_y + ball_radius, fill=ball_color)
 
         # Schedule the next update after 1000 milliseconds
-        self.root.after(1000, self.update_position)
+        self.root.after(1000, self.update_position, canvas)
 
     def set_position(self):
-        # Your set position logic goes here
+        # Set position logic goes here -- To be added
         pass
 
 if __name__ == "__main__":

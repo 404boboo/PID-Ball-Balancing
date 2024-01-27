@@ -13,7 +13,13 @@ class SerialCommunication:
         self.serial_port.write(command.encode())
 
     def receive_data(self):
-        return self.serial_port.readline().decode().strip()
+     try:
+         if self.serial_port.in_waiting > 0:
+            return self.serial_port.readline().decode().strip()
+     except Exception as e:
+        print(f"Error in receive_data: {e}")
+     return ""
+
 
     def close_connection(self):
         self.serial_port.close()

@@ -76,7 +76,6 @@ struct us_sensor_str distance_sensor2;
 
 // Servos
 SERVO_Handle_TypeDef hservo1 = { .PwmOut = PWM_INIT_HANDLE(&htim9, TIM_CHANNEL_1) };
-
 // Buffers //
 char position_buffer[5];
 uint8_t tx_buffer[4];
@@ -106,13 +105,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-  if(huart == &huart3)
-  {
-	SERVO_WritePosition(&hservo1, 180 - strtol((char*)tx_buffer, 0, 10));
-    HAL_UART_Receive_IT(&huart3, tx_buffer, tx_msg_len);
 
-
-  }
 }
 /* USER CODE END 0 */
 
@@ -188,7 +181,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  //PID(&hservo1,position,setP);
+	 // PID(&hservo1,position,setP);
 
 	  // Send Value of Position to LCD
 	  LCD_I2C_SetCursor(&hlcd3, 0, 10);

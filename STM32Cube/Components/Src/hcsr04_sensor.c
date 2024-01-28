@@ -43,7 +43,7 @@ void hc_sr04_init(struct us_sensor_str *us_sensor, TIM_HandleTypeDef *htim_echo,
   * @param  distance_us: Distance in microseconds.
   * @retval Distance in centimeters.
   */
-uint32_t hc_sr04_convert_us_to_cm(uint32_t distance_us)
+float hc_sr04_convert_us_to_cm(float distance_us)
 {
     return (distance_us / HC_SR04_US_TO_CM_CONVERTER);
 }
@@ -54,7 +54,7 @@ uint32_t hc_sr04_convert_us_to_cm(uint32_t distance_us)
   * @param  dis2: Distance 2 value.
   * @retval Calculated position value.
   */
-int CalulatePosition(int dis1, int dis2)
+int CalulatePosition(float dis1, float dis2)
 {
     int position = 0;
     if (dis1 < 29)
@@ -63,7 +63,14 @@ int CalulatePosition(int dis1, int dis2)
         position = 60 - dis2;
     else if (dis1 >= 29 && dis1 <= 31 && dis2 >= 29 && dis2 <= 31)
         position = 30;
-
+    else if (dis1 >= 29 && dis1 <= 31 && dis2 >= 29 && dis2 <= 31&&dis1>dis2)
+    	position = 31;
+    else if(dis1 >= 29 && dis1 <= 31 && dis2 >= 29 && dis2 <= 31&&dis1<dis2)
+    	position = 29;
+    else if (dis1>61 || dis1<0)
+    	position = 0;
+    else if(dis2>61 || dis2<0)
+    	position = 60;
     return position;
 }
 

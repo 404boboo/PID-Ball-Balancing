@@ -21,9 +21,9 @@
 /* Public macro --------------------------------------------------------------*/
 
 /* Public variables ----------------------------------------------------------*/
-double kp = 3.2;   // Proportional gain parameter in the PID controller. Scales the error to determine the proportional contribution.
+double kp = 3;   // Proportional gain parameter in the PID controller. Scales the error to determine the proportional contribution.
 double ki = 0.03;  // Integral gain parameter in the PID controller. Scales the accumulated error over time to determine the integral contribution.
-double kd = 7200;  // Derivative gain parameter in the PID controller. Scales the rate of change of the error to determine the derivative contribution.
+double kd = 18000;  // Derivative gain parameter in the PID controller. Scales the rate of change of the error to determine the derivative contribution.
 /* Private variables ---------------------------------------------------------*/
 
 /* Public function prototypes ------------------------------------------------*/

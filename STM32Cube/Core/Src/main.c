@@ -58,10 +58,10 @@
 /* USER CODE BEGIN PV */
 
 float tx_us = 0;     // Time in microseconds
-int dx_cm = 0;     // Distance for sensor 1 in centimeters
-int dx_cm2 = 0;     // Distance for sensor 2 in centimeters
+float dx_cm = 0;     // Distance for sensor 1 in centimeters
+float dx_cm2 = 0;     // Distance for sensor 2 in centimeters
 int position = 0.00; // Position of the ball
-int setP = 25;
+int setP = 28;
 char KeyPad_Buffer[2];
 unsigned char character;
 unsigned int user_len= 2;
@@ -152,7 +152,7 @@ int main(void)
 
   // Start Servos
   SERVO_Init(&hservo1);
-  SERVO_WritePosition(&hservo1, 45.0f);
+  SERVO_WritePosition(&hservo1, 90.0f);
 
 
  // Start LCD and set up GUI
@@ -263,7 +263,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
 	if(TIM1 == htim->Instance)
 	{
-		uint32_t echo_us;
+		float echo_us;
           // Convert and assign distance
 		echo_us = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
 		dx_cm = distance_sensor.distance_cm = hc_sr04_convert_us_to_cm(echo_us);
@@ -271,7 +271,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 
 	if(TIM3 == htim->Instance)
 	{
-		uint32_t echo_us;
+		float echo_us;
         // Convert and Assign distance
 		echo_us = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
 		dx_cm2 = distance_sensor.distance_cm = hc_sr04_convert_us_to_cm(echo_us);

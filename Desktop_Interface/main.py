@@ -10,7 +10,7 @@ from GUI import BallBalanceGUI
 from serial_communication import SerialCommunication
 
 if __name__ == "__main__":
-    serial_comm = SerialCommunication("COM7", 115200)
+    serial_comm = SerialCommunication()
     app = BallBalanceGUI(serial_comm)
     app.mainloop()
 

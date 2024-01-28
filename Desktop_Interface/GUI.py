@@ -49,92 +49,95 @@ class BallBalanceGUI(tk.Tk):
 
         self.title("Ball Balancing App")
         self.geometry("1200x750")  # Set the window size
+        self.frame_Serial = None  # Instance variable for the frame
 
         self.create_widgets()
 
+
+ 
+
     def create_widgets(self):
-     # Ball and Beam
-     self.canvas = tk.Canvas(self, width=500, height=300, bg="white")
-     self.ball = self.canvas.create_oval(0, 180, 40, 220, fill="red")
-     self.canvas.pack(pady=10)
+        # Ball and Beam
+        self.canvas = tk.Canvas(self, width=500, height=300, bg="white")
+        self.ball = self.canvas.create_oval(0, 180, 40, 220, fill="red")
+        self.canvas.grid(row=0, column=0, rowspan=3, pady=10, padx=10)
 
-     # Frame for setpoint buttons and serial configuration
-     frame_buttons_serial = ttk.Frame(self)
+        # Serial Configuration Title
+        serial_title_label = ttk.Label(self, text="Serial Configuration:", font=("Times New Roman", 16, "bold"))
+        serial_title_label.grid(row=0, column=1, columnspan=2, pady=(50, 0), padx=10)
 
-     # Setpoint Buttons
-     setpoint_frame = ttk.Frame(frame_buttons_serial)
-     ttk.Button(setpoint_frame, text="Set Point 30", command=lambda: self.set_setpoint(30)).grid(row=0, column=0, padx=10)
-     ttk.Button(setpoint_frame, text="Set Point 20", command=lambda: self.set_setpoint(20)).grid(row=0, column=1, padx=10)
-     ttk.Button(setpoint_frame, text="Set Point 40", command=lambda: self.set_setpoint(40)).grid(row=0, column=2, padx=10)
-     setpoint_frame.grid(row=0, column=0, pady=(0, 10))
+        # COM Port Configuration
+        ttk.Label(self, text="COM Port:", font=("Times New Roman", 12)).grid(row=1, column=1, columnspan=1, padx=(55,0))
+        ttk.Label(self, text="Baud Rate:", font=("Times New Roman", 12)).grid(row=2, column=1, columnspan=1, padx=(55,0))
 
-     # Serial Configuration Title
-     serial_title_label = ttk.Label(frame_buttons_serial, text="Serial Configuration:")
-     serial_title_label.grid(row=1, column=0, columnspan=3, pady=(0, 5))
+        self.clicked_com = tk.StringVar()
+        self.clicked_bd = tk.StringVar()
+        com_options = ["COM1", "COM2", "COM3", "COM4"]  # available COM ports
+        baud_options = ["9600", "115200", "38400"]  # available baud rates
 
-     # Serial Port Configuration
-     serial_frame = ttk.Frame(frame_buttons_serial)
-     ttk.Label(serial_frame, text="COM Port:").grid(row=0, column=0, padx=10)
-     ttk.Label(serial_frame, text="Baud Rate:").grid(row=1, column=0, padx=10)
+        self.com_menu = ttk.Combobox(self, textvariable=self.clicked_com, values=com_options)
+        self.bd_menu = ttk.Combobox(self, textvariable=self.clicked_bd, values=baud_options)
 
-     self.clicked_com = tk.StringVar()
-     self.clicked_bd = tk.StringVar()
-     com_options = ["COM1", "COM2", "COM3", "COM4"]  #  COM ports
-     baud_options = ["9600", "115200", "38400"]  #  baud rates
+        self.com_menu.grid(row=1, column=2, padx=10)
+        self.bd_menu.grid(row=2, column=2, padx=10)
 
-     self.com_menu = ttk.Combobox(serial_frame, textvariable=self.clicked_com, values=com_options)
-     self.bd_menu = ttk.Combobox(serial_frame, textvariable=self.clicked_bd, values=baud_options)
+        # Connect/Disconnect Button
+        self.connect_button = ttk.Button(self, text="Connect", command=self.toggle_connection)
+        self.connect_button.grid(row=2, column=3, pady=(0, 0), padx=5)
 
-     self.com_menu.grid(row=0, column=1, padx=10)
-     self.bd_menu.grid(row=1, column=1, padx=10)
-     serial_frame.grid(row=2, column=0, columnspan=3, pady=(0, 10))
+        # Refresh Button
+        ttk.Button(self, text="Refresh", command=self.refresh).grid(row=1, column=3, columnspan = 1, pady=(0, 0), padx=5)
 
-     # Connect/Disconnect Button
-     self.connect_button = ttk.Button(frame_buttons_serial, text="Connect", command=self.toggle_connection)
-     self.connect_button.grid(row=3, column=0, columnspan=3, pady=(0, 10))
+        # Current Position Label
+        ttk.Label(self, text="Current Position:", font=("Helvetica", 12, "bold")).grid(row=3, column=3, pady=(0, 50), padx=10)
+        ttk.Label(self, textvariable=self.current_position, font=("Helvetica", 12, "bold")).grid(row=3, column=4, pady=(0, 50), padx=10)
 
-     # Pack the frame containing setpoint buttons and serial configuration
-     frame_buttons_serial.pack(pady=10)
+        # Setpoint Buttons
+        ttk.Button(self, text="Set Point 20", command=lambda: self.set_setpoint(20)).grid(row=3, column=2, pady=5, padx=(70,0))
+        ttk.Button(self, text="Set Point 30", command=lambda: self.set_setpoint(30)).grid(row=3, column=3, pady=5, padx=(0,5))
+        ttk.Button(self, text="Set Point 40", command=lambda: self.set_setpoint(40)).grid(row=3, column=4, pady=5, padx=(0,5))
 
-     # Current Position Label
-     ttk.Label(self, text="Current Position:").pack()
-     ttk.Label(self, textvariable=self.current_position).pack()
+        # Logs Button
+        ttk.Button(self, text="Logs", command=self.show_logs).grid(row=2, column=5, columnspan=1, pady=(0, 0))
 
-     # Exit Button
-     self.exit_button = ttk.Button(self, text="Exit", command=self.exit_application)
-     self.exit_button.pack(pady=10)
+        # Exit Button
+        self.exit_button = ttk.Button(self, text="Exit", command=self.exit_application)
+        self.exit_button.grid(row=1, column=5, columnspan=1, pady=(0, 10))
 
-     # Real-time Plot
-     self.fig, self.ax = plt.subplots(figsize=(8, 4))
-     self.canvas_plot = FigureCanvasTkAgg(self.fig, master=self)
-     self.canvas_plot.get_tk_widget().pack()
+        # Real-time Plot
+        self.fig, self.ax = plt.subplots(figsize=(7, 4.2))
+        self.canvas_plot = FigureCanvasTkAgg(self.fig, master=self)
+        self.canvas_plot.get_tk_widget().grid(row=3, column=0, columnspan=2)
 
-     # Initialize Real-time Plot
-     self.x_data, self.y_data = [], []
-     self.line, = self.ax.plot(self.x_data, self.y_data, 'r-', label='Ball Position')
-     self.ax.set_ylim(0, 60)
-     self.ax.set_xlabel('Time (s)')
-     self.ax.set_ylabel('Ball Position (cm)')
-     self.ax.legend()
+        # Initialize Real-time Plot
+        self.x_data, self.y_data = [], []
+        self.line, = self.ax.plot(self.x_data, self.y_data, 'r-', label='Ball Position')
+        self.ax.set_ylim(0, 60)
+        self.ax.set_xlabel('Time (s)')
+        self.ax.set_ylabel('Ball Position (cm)')
+        self.ax.legend()
+        
+        # Start the serial thread
+        self.serial_thread = SerialThread(self.serial_port, self.queue)
+        self.serial_thread.start()
 
-     # Start the serial thread
-     self.serial_thread = SerialThread(self.serial_port, self.queue)
-     self.serial_thread.start()
+        # Schedule the animation update
+        self.update_animation()
 
-     # Schedule the animation update
-     self.update_animation()
+    def refresh(self):
+        # refresh functionality
+        pass
 
+    def show_logs(self):
+        #  functionality to show logs
+        pass
 
-
-    def start_serial_thread(self):
-        if self.serial_thread is None or not self.serial_thread.is_alive():
-            self.serial_thread = SerialThread(self.serial_port, self.queue)
-            self.serial_thread.start()
 
     def stop_serial_thread(self):
         if self.serial_thread is not None and self.serial_thread.is_alive():
             self.serial_thread.stop()
             self.serial_thread.join()  # Wait for the thread to finish
+            
     def set_setpoint(self, setpoint):
         # Send setpoint value to serial port
         pass
@@ -143,7 +146,7 @@ class BallBalanceGUI(tk.Tk):
         # Check if the window has been destroyed
         
         if not self.winfo_exists():
-            self.stop_serial_thread
+            self.stop_serial_thread()
             return
         try:
             position = float(self.queue.get_nowait())
@@ -188,7 +191,7 @@ class BallBalanceGUI(tk.Tk):
     # Handle the EXIT button when pressed
     def exit_application(self):
         # Handle serial thread when EXIT button is pressed to not run on background.
-        self.stop_serial_thread
+        self.stop_serial_thread()
         self.destroy()
 
     # Toggle connection status

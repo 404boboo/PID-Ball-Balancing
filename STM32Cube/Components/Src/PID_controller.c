@@ -16,12 +16,12 @@ double kp = 10;
 double ki = 0.038;
 double kd = 500;
 
-void PID(struct us_sensor_str* Sensor, SERVO_Handle_TypeDef* servo)
+void PID(SERVO_Handle_TypeDef* servo,float Position,float SetP)
 {
-    int setP = 30;
+
     static double priError = 0;
     static double toError = 0;
-    float dis = Sensor->distance_cm;
+    float dis = Position;
     float error = setP - dis;
 
     // calculating PID values

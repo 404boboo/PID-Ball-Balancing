@@ -57,8 +57,7 @@ float tx_us = 0;     // Time in microseconds
 float dx_cm = 0;     // Distance for sensor 1 in centimeters
 float dx_cm2 = 0;     // Distance for sensor 2 in centimeters
 float position = 0.00; // Position of the ball
-extern setP = 30;
-
+int setP = 30;
 unsigned char character;
 unsigned int user_len= 2;
 unsigned int i = 0;
@@ -180,6 +179,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  PID(&hservo1,position,setP);
 	  LCD_I2C_SetCursor(&hlcd3, 0, 10);
 	  LCD_I2C_printDecInt(&hlcd3, (int)position);
 

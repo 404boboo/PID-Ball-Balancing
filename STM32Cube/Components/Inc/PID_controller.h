@@ -28,7 +28,7 @@ extern double ki;
 extern double kd;
 extern int setP;
 
-//void PID(hcsr04_data_t* Sensor ,SERVO_Handle_TypeDef* servo );
+void PID(SERVO_Handle_TypeDef* servo,float Position,float SetP);
 
 
 #endif /* INC_PID_CONTROLLER_H_ */

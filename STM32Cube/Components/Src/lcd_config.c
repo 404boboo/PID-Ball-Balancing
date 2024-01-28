@@ -9,19 +9,24 @@
   *
   ******************************************************************************
   */
-  
-/* Includes ------------------------------------------------------------------*/
+  /* Private includes ----------------------------------------------------------*/
+
 #include "lcd.h"
 #include "lcd_config.h"
 #include "main.h"
 #include "i2c.h"
-
-#ifdef LCD_USE_TIMER
 #include "tim.h"
+
+/* Private typedef -----------------------------------------------------------*/
+
+/* Private define ------------------------------------------------------------*/
+#ifdef LCD_USE_TIMER
 #endif
+/* Private macro -------------------------------------------------------------*/
 
+/* Private variables ---------------------------------------------------------*/
 
-
+/* Public variables ----------------------------------------------------------*/
 LCD_I2C_HandleTypeDef hlcd3 = {
     .I2C = &hi2c1,
     .Address = 0x27,  // PCF8574T (for all jumpers OPEN)
@@ -29,4 +34,18 @@ LCD_I2C_HandleTypeDef hlcd3 = {
     .Timer = &htim7
 };
 
-// Additional configuration or comments can be added here
+/* Private function prototypes -----------------------------------------------*/
+
+/* Public function prototypes ------------------------------------------------*/
+
+/* Private functions ---------------------------------------------------------*/
+
+/* Public functions ----------------------------------------------------------*/
+
+
+
+
+
+
+
+

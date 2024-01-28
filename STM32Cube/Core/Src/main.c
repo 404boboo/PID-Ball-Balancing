@@ -112,8 +112,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     HAL_UART_Receive_IT(&huart3, tx_buffer, tx_msg_len);
 
 
-   // HAL_UART_Receive_IT(&huart3, &character, 1);
-
   }
 }
 /* USER CODE END 0 */
@@ -159,13 +157,13 @@ int main(void)
   hc_sr04_init(&distance_sensor, &htim1, &htim2, TIM_CHANNEL_3);
   hc_sr04_init(&distance_sensor2, &htim3, &htim2, TIM_CHANNEL_3);
 
-
+  // Start Servos
   SERVO_Init(&hservo1);
   SERVO_WritePosition(&hservo1, 130.0f);
   HAL_UART_Receive_IT(&huart3, tx_buffer, tx_msg_len);
 
 
- //LCD constant display - Position, Set Position
+ // Start LCD and set up GUI
   LCD_I2C_Init(&hlcd3);
   LCD_I2C_SetCursor(&hlcd3, 0, 0);
   LCD_I2C_printStr(&hlcd3, "Position: ");
@@ -181,11 +179,7 @@ int main(void)
   LCD_I2C_printStr(&hlcd3, "cm");
 
   LCD_I2C_SetCursor(&hlcd3, 1, 11);
-//  __lcd_i2c_write_command(&hlcd3, LCD_OPT_B);
   LCD_I2C_printDecInt(&hlcd3, setP);
-
- // HAL_UART_Receive_IT(&huart3, &character, 1);
-  //KEYPAD_MainLoop();
 
 
   /* USER CODE END 2 */
@@ -196,6 +190,7 @@ int main(void)
   {
 	  //PID(&hservo1,position,setP);
 
+	  // Send Value of Position to LCD
 	  LCD_I2C_SetCursor(&hlcd3, 0, 10);
 	  LCD_I2C_printDecInt(&hlcd3, position);
 
@@ -205,8 +200,6 @@ int main(void)
 	  // Transmit position through UART
 	   HAL_UART_Transmit(&huart3, (uint8_t*)position_buffer, strlen(position_buffer), HAL_MAX_DELAY);
 
-
-	 // LCD_I2C_printStr(&hlcd3, text);
 	  HAL_Delay(100);
 
     /* USER CODE END WHILE */
@@ -278,7 +271,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 	if(TIM1 == htim->Instance)
 	{
 		uint32_t echo_us;
-          // Convert and Assign distance
+          // Convert and assign distance
 		echo_us = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
 		dx_cm = distance_sensor.distance_cm = hc_sr04_convert_us_to_cm(echo_us);
 	}
@@ -292,10 +285,8 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 	}
 
 	    // Calculate average distance or perform any other processing
-	    position = CalulatePosition(dx_cm, dx_cm2);
+	      position = CalulatePosition(dx_cm, dx_cm2);
 		  PID(&hservo1,position,setP);
-
-	//position = position(dx_cm,dx_cm2,pos);
 
 }
 

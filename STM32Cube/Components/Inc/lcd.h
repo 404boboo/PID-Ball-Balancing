@@ -157,13 +157,7 @@ void LCD_I2C_DefineChar(LCD_I2C_HandleTypeDef* lcd, uint8_t code, uint8_t bitmap
  */
 void LCD_I2C_printf(LCD_I2C_HandleTypeDef* lcd, const char* format, ...);
 
-// Function to map a value from [0, 60] to [1, 13]
-int mapToRange(float input);
 
-//Function for adding a 0 if 3 characters are passed
-void padWithZeros(char* str);
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 #endif
-///@}
 
 #endif /* INC_LCD_H_ */

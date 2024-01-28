@@ -1,3 +1,3 @@
-../Components/Src/Servo.c:36:6:SERVO_Init	1
-../Components/Src/Servo.c:42:6:SERVO_WritePosition	1
-../Components/Src/Servo.c:49:7:SERVO_ReadPosition	1
+../Components/Src/Servo.c:41:6:SERVO_Init	1
+../Components/Src/Servo.c:53:6:SERVO_WritePosition	1
+../Components/Src/Servo.c:66:7:SERVO_ReadPosition	1

@@ -32,12 +32,23 @@
 /* Private functions ---------------------------------------------------------*/
 
 /* Public functions ----------------------------------------------------------*/
+/**
+  * @brief Initializes a servo motor.
+  * @param[in/out] hservo : Servo motor handler.
+  * @retval None
+  */
 
 void SERVO_Init(SERVO_Handle_TypeDef* hservo)
 {
 	SERVO_WritePosition(hservo, 90.0f);
 	PWM_Init(&(hservo->PwmOut));
 }
+/**
+  * @brief Writes a new position to the servo motor.
+  * @param[in/out] hservo : Servo motor handler.
+  * @param[in] pos        : Desired position for the servo motor.
+  * @retval None
+  */
 
 void SERVO_WritePosition(SERVO_Handle_TypeDef* hservo, float pos)
 {
@@ -45,6 +56,12 @@ void SERVO_WritePosition(SERVO_Handle_TypeDef* hservo, float pos)
 	float duty = __LINEAR_TRANSFORM(hservo->Position, 120.0f, 160.0f, SERVO_MIN_DUTY, SERVO_MAX_DUTY);
 	PWM_WriteDuty(&(hservo->PwmOut), duty);
 }
+
+/**
+  * @brief Reads and returns the current position of the servo motor.
+  * @param[in] hservo : Servo motor handler.
+  * @retval float      : Current position of the servo motor.
+  */
 
 float SERVO_ReadPosition(SERVO_Handle_TypeDef* hservo)
 {

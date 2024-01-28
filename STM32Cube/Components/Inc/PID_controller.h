@@ -32,7 +32,11 @@ extern double kd;
 extern int setP;
 
 /* Public function prototypes ------------------------------------------------*/
-
+/**
+*@brief: Calculate the PID control output based on the Proportional, Integral, and Derivative components
+*@param:
+*@retval: None
+*/
 void PID(SERVO_Handle_TypeDef* servo, int Position, int SetP);
 
 

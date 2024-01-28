@@ -13,6 +13,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "lcd.h"
 #include <string.h>
+#include <stdlib.h>
+
 #include "usart.h"
 
 /* Typedef -------------------------------------------------------------------*/
@@ -245,17 +247,6 @@ void LCD_I2C_printf(LCD_I2C_HandleTypeDef* hlcd, const char* format, ...)
   va_end(args);
 }
 
-int mapToRange(float input) {
-    // Ensure that the input is within the valid range [0, 60]
-    if (input < 0) {
-        input = 0;
-    } else if (input > 60) {
-        input = 60;
-    }
-
-    // Map the input to the desired range [1, 13]
-    return ((input * 12) / 60) + 1;
-}
 
 
 

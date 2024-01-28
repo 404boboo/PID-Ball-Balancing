@@ -2,7 +2,7 @@
 # Description: Serial communication module for interfacing with the STM32 board.
 # Author: Ahmed Bouras
 # Date: 25/01/2024
-# Version: 1.7
+# Version: 1.8
 
 import serial
 import time
@@ -25,8 +25,16 @@ class SerialCommunication:
             self.serial_port.close()
 
     def send_data(self, data):
-        if self.serial_port is not None and self.serial_port.is_open:
-            self.serial_port.write(data.encode())
+        try:
+            if not self.serial_port.isOpen():
+                raise Exception("Serial port not open.")
+            
+            if isinstance(data, str):
+                data = data.encode()
+
+            self.serial_port.write(data)
+        except Exception as e:
+            raise e
 
     def receive_data(self):
         if self.serial_port is not None and self.serial_port.is_open:

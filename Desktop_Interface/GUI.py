@@ -139,8 +139,17 @@ class BallBalanceGUI(tk.Tk):
             self.serial_thread.join()  # Wait for the thread to finish
             
     def set_setpoint(self, setpoint):
-        # Send setpoint value to serial port
-        pass
+        if not self.connected:  # Check if user is connected to serial port before set pointing
+            messagebox.showwarning("Connection Warning", "Please connect to the serial port first.")
+            return
+
+        try:
+            # Send the setpoint value to the serial port
+            setpoint_str = f"{setpoint}\r\n"
+            setpoint_bytes = setpoint_str.encode('utf-8')  # Encode as bytes
+            self.serial_port.send_data(setpoint_bytes)
+        except Exception as e:
+            messagebox.showerror("Setpoint Error", f"Failed to set setpoint: {e}")
 
     def update_animation(self):
         # Check if the window has been destroyed
@@ -149,9 +158,9 @@ class BallBalanceGUI(tk.Tk):
             self.stop_serial_thread()
             return
         try:
-            position = float(self.queue.get_nowait())
+            position = int(self.queue.get_nowait())
         except:
-            position = 0.0
+            position = 0
 
         # Update the current position variable
         self.current_position.set(position)
@@ -161,30 +170,39 @@ class BallBalanceGUI(tk.Tk):
         beam_length = 400
         beam_center_x = 250 
         beam_left = beam_center_x - beam_length / 2
-        self.canvas.create_rectangle(beam_left, 150, beam_left + beam_length, 160 + beam_width, fill="black")
+
+        # Create or update the beam elements
+        beam_items = self.canvas.find_withtag("beam")
+        if not beam_items:
+         self.canvas.create_rectangle(beam_left, 150, beam_left + beam_length, 160 + beam_width, fill="black")
+        else:
+         self.canvas.coords(beam_items[0], beam_left, 150, beam_left + beam_length, 160 + beam_width)
+
 
         # Draw the ball at the current position
         ball_radius = 10
-        ball_x = beam_left + position * (beam_length / 120) 
+        ball_x = beam_left + position * (beam_length / 60) # Map the ball to the beam 0 to 60 cm. (Left to right)
         ball_y = 140  # Place the ball on top of the beam
         self.canvas.coords(self.ball, ball_x - ball_radius, ball_y - ball_radius, ball_x + ball_radius, ball_y + ball_radius)
 
+        # CHeck if serial connection is established
+        if self.connected:
         # Update Real-time Plot
-        self.x_data.append(self.x_data[-1] + 0.1 if self.x_data else 0)
-        self.y_data.append(position)
+         self.x_data.append(self.x_data[-1] + 0.1 if self.x_data else 0)
+         self.y_data.append(position)
 
-        # Trim data if it exceeds MAX_FRAMES
-        if len(self.x_data) > 100:
+         # Trim data if it exceeds MAX_FRAMES
+         if len(self.x_data) > 100:
             self.x_data.pop(0)
             self.y_data.pop(0)
 
-        # Update the line data
-        self.line.set_data(self.x_data, self.y_data)
-        self.ax.relim()  # Update limits
-        self.ax.autoscale_view()  # Autoscale the view
-        self.canvas_plot.draw()
+         # Update the line data
+         self.line.set_data(self.x_data, self.y_data)
+         self.ax.relim()  # Update limits
+         self.ax.autoscale_view()  # Autoscale the view
+         self.canvas_plot.draw()
 
-        # Schedule the next update after 500 milliseconds
+         # Schedule the next update after 500 milliseconds
         self.after(100, self.update_animation)
     
 

@@ -62,7 +62,7 @@ int dx_cm = 0;     // Distance for sensor 1 in centimeters
 int dx_cm2 = 0;     // Distance for sensor 2 in centimeters
 int position = 0.00; // Position of the ball
 int setP = 25;
-
+char KeyPad_Buffer[2];
 unsigned char character;
 unsigned int user_len= 2;
 unsigned int i = 0;
@@ -152,8 +152,7 @@ int main(void)
 
   // Start Servos
   SERVO_Init(&hservo1);
-  SERVO_WritePosition(&hservo1, 130.0f);
-  HAL_UART_Receive_IT(&huart3, tx_buffer, tx_msg_len);
+  SERVO_WritePosition(&hservo1, 45.0f);
 
 
  // Start LCD and set up GUI
@@ -173,7 +172,7 @@ int main(void)
 
   LCD_I2C_SetCursor(&hlcd3, 1, 11);
   LCD_I2C_printDecInt(&hlcd3, setP);
-
+  KEYPAD_Handle_TypeDef hkeypad = KEYPAD_4x4_INIT_HANDLE(KEYPAD);
 
   /* USER CODE END 2 */
 
@@ -182,6 +181,7 @@ int main(void)
   while (1)
   {
 	 // PID(&hservo1,position,setP);
+	  KEYPAD_Handling(&hkeypad,KeyPad_Buffer, 2);
 
 	  // Send Value of Position to LCD
 	  LCD_I2C_SetCursor(&hlcd3, 0, 10);

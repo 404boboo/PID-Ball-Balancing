@@ -1,2 +1,2 @@
 ../Components/Src/Keypad.c:43:6:KEYPAD_GetKey	5
-../Components/Src/Keypad.c:71:6:KEYPAD_MainLoop	3
+../Components/Src/Keypad.c:71:6:KEYPAD_Handling	4

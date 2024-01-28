@@ -1,6 +1,6 @@
 Components/Src/Servo.o: ../Components/Src/Servo.c \
- C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/Servo.h \
- C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/pwm.h \
+ D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/Servo.h \
+ D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/pwm.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
  ../Core/Inc/stm32f7xx_hal_conf.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h \
@@ -31,9 +31,9 @@ Components/Src/Servo.o: ../Components/Src/Servo.c \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h \
- C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/common.h
-C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/Servo.h:
-C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/pwm.h:
+ D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/common.h
+D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/Servo.h:
+D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/pwm.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h:
@@ -64,4 +64,4 @@ C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h:
-C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/common.h:
+D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/common.h:

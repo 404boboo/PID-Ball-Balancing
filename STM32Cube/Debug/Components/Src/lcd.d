@@ -1,5 +1,5 @@
 Components/Src/lcd.o: ../Components/Src/lcd.c \
- C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/lcd.h \
+ D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/lcd.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
  ../Core/Inc/stm32f7xx_hal_conf.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h \
@@ -31,7 +31,7 @@ Components/Src/lcd.o: ../Components/Src/lcd.c \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h \
  ../Core/Inc/usart.h ../Core/Inc/main.h
-C:/Users/ahmed/OneDrive/Desktop/Projects/PID-Ball-Balancing/STM32Cube/Components/Inc/lcd.h:
+D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/lcd.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h:

@@ -93,5 +93,5 @@ char KEYPAD_GetKey(KEYPAD_Handle_TypeDef* hkeypad, uint32_t delay);
   * @param  None
   * @retval None
   */
-void KEYPAD_MainLoop(void);
+void KEYPAD_Handling(KEYPAD_Handle_TypeDef* hkeypad, uint8_t KeypadBuffer[], int BufferSize);
 #endif /* INC_KEYPAD_H_ */

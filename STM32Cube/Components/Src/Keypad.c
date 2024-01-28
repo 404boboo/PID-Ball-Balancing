@@ -68,32 +68,29 @@ char KEYPAD_GetKey(KEYPAD_Handle_TypeDef* hkeypad, uint32_t delay)
   * @param  None
   * @retval None
   */
-void KEYPAD_MainLoop(void)
+void KEYPAD_Handling(KEYPAD_Handle_TypeDef* hkeypad, uint8_t KeypadBuffer[], int BufferSize)
 {
-    char c;
-    char KeypadBuffer[2];
-    int valuesReceived = 0;
-    KEYPAD_Handle_TypeDef hkeypad = KEYPAD_4x4_INIT_HANDLE(KEYPAD);
+    static int valuesReceived = 0;  // Static variable to retain its value across function calls
 
+    for (int i = 0; i < BufferSize; i++)
+    {
+        char c = KEYPAD_GetKey(hkeypad, 10);
 
-        if ((c = KEYPAD_GetKey(&hkeypad, 0)) != '\0')
+        if (c != '\0')
         {
-            KeypadBuffer[valuesReceived] = c;
+            KeypadBuffer[valuesReceived] = (int)c;
             valuesReceived++;
 
             // Check if buffer is full
-            if (valuesReceived == 2)
+            if (valuesReceived == BufferSize)
             {
-                // Transmit the buffer through UART
-                HAL_UART_Transmit(&huart3, (uint8_t*)KeypadBuffer, 2, 10);
-
-                // Reset the counter and buffer
+                // Reset the counter
                 valuesReceived = 0;
-                memset(KeypadBuffer, 0, sizeof(KeypadBuffer));
             }
-        }
-}
 
+        }
+    }
+}
 
 
 /*****END OF FILE****/

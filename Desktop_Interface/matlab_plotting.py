@@ -2,6 +2,8 @@
 # Description: MATLAB plotting file for the PID Ball Balancing Desktop Interface.
 # Author: Ahmed Bouras
 # Date: 27/01/2024
+# Version: 1.3
+
 
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -14,8 +16,6 @@ class RealTimePlot(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        # Your existing MATLAB plotting logic here
-        # For example, a simple plot with random data
         import matplotlib.pyplot as plt
         import numpy as np
 
@@ -30,6 +30,5 @@ class RealTimePlot(tk.Frame):
         self.canvas.draw()
 
     def update_animation(self, position):
-        # Your existing animation update logic here
         self.line.set_data([position, position], [0, 1])
         return self.line,

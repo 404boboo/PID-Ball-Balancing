@@ -2,13 +2,32 @@
 # Description: Desktop application for user interface using serial communication to communicate with the STM32 board.
 # Author: Ahmed Bouras
 # Date: 25/01/2024
-# Version: 1.4
-# File: GUI.py
+# Version: 1.6
+
 import tkinter as tk
 from tkinter import ttk
-from serial_communication import SerialCommunication
+from queue import Queue
+from threading import Thread, Event
+from serial_communication import SerialCommunication 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
+
+class SerialThread(Thread):
+    def __init__(self, serial_port, queue):
+        super().__init__()
+        self.serial_port = serial_port
+        self.queue = queue
+        self._stop_event= Event()
+
+    def run(self):
+        while not self._stop_event.is_set():
+            position = self.serial_port.receive_data()
+            print(f"Received position: {position}")
+            self.queue.put(position)
+
+    def stop(self):
+        self._stop_event.set()
+
 
 class BallBalanceGUI(tk.Tk):
     def __init__(self, serial_port):
@@ -16,6 +35,7 @@ class BallBalanceGUI(tk.Tk):
 
         self.serial_port = serial_port
         self.current_position = tk.DoubleVar(value=0)
+        self.queue = Queue()
 
         self.title("Ball Balancing App")
         self.geometry("1000x750")  # Set the window size
@@ -40,7 +60,7 @@ class BallBalanceGUI(tk.Tk):
         ttk.Label(self, textvariable=self.current_position).pack()
 
         # Exit Button
-        self.exit_button = ttk.Button(self, text="Exit", command=self.destroy)
+        self.exit_button = ttk.Button(self, text="Exit", command=self.exit_application)
         self.exit_button.pack(pady=10)
 
         # Real-time Plot
@@ -56,54 +76,65 @@ class BallBalanceGUI(tk.Tk):
         self.ax.set_ylabel('Ball Position (cm)')
         self.ax.legend()
 
+        # Start the serial thread
+        self.serial_thread = SerialThread(self.serial_port, self.queue)
+        self.serial_thread.start()
+
         # Schedule the animation update
         self.update_animation()
 
     def set_setpoint(self, setpoint):
-        # Send setpoint value to Arduino (you need to implement this part)
+        # Send setpoint value to serial port
         pass
 
     def update_animation(self):
-     # Receive ball position from the serial port (you need to implement this part)
-     position = 0.0
-     try:
-        position = float(self.serial_port.receive_data())
-     except ValueError:
-        pass
+        # Check if the window has been destroyed
+        if not self.winfo_exists():
+            return
+        try:
+            position = float(self.queue.get_nowait())
+        except:
+            position = 0.0
 
-     # Update Ball Position
-     self.current_position.set(position)
+        # Update the current position variable
+        self.current_position.set(position)
 
-     # Draw the beam
-     beam_width = 10
-     beam_length = 400
-     beam_center_x = 250 
-     beam_left = beam_center_x - beam_length / 2
-     self.canvas.create_rectangle(beam_left, 150, beam_left + beam_length, 160 + beam_width, fill = "black")
+        # Draw the beam
+        beam_width = 10
+        beam_length = 400
+        beam_center_x = 250 
+        beam_left = beam_center_x - beam_length / 2
+        self.canvas.create_rectangle(beam_left, 150, beam_left + beam_length, 160 + beam_width, fill="black")
 
-     # Draw the ball at the current position
-     ball_radius = 10
-     ball_x = beam_left + (position / 60) * beam_length
-     ball_y = 140 # Place the ball on top of the beam
-     self.canvas.coords(self.ball, ball_x - ball_radius, ball_y - ball_radius, ball_x + ball_radius, ball_y + ball_radius)
+        # Draw the ball at the current position
+        ball_radius = 10
+        ball_x = beam_left + position * (beam_length / 120) 
+        ball_y = 140  # Place the ball on top of the beam
+        self.canvas.coords(self.ball, ball_x - ball_radius, ball_y - ball_radius, ball_x + ball_radius, ball_y + ball_radius)
 
-     # Update Real-time Plot
-     self.x_data.append(self.x_data[-1] + 0.1 if self.x_data else 0)
-     self.y_data.append(position)
+        # Update Real-time Plot
+        self.x_data.append(self.x_data[-1] + 0.1 if self.x_data else 0)
+        self.y_data.append(position)
 
-     # Trim data if it exceeds MAX_FRAMES
-     if len(self.x_data) > 100:
-        self.x_data.pop(0)
-        self.y_data.pop(0)
+        # Trim data if it exceeds MAX_FRAMES
+        if len(self.x_data) > 100:
+            self.x_data.pop(0)
+            self.y_data.pop(0)
 
-     # Update the line data
-     self.line.set_data(self.x_data, self.y_data)
-     self.ax.relim()  # Update limits
-     self.ax.autoscale_view()  # Autoscale the view
-     self.canvas_plot.draw()
+        # Update the line data
+        self.line.set_data(self.x_data, self.y_data)
+        self.ax.relim()  # Update limits
+        self.ax.autoscale_view()  # Autoscale the view
+        self.canvas_plot.draw()
 
-     # Schedule the next update after 50 milliseconds
-     self.after(50, self.update_animation)
+        # Schedule the next update after 500 milliseconds
+        self.after(500, self.update_animation)
+
+        # Handle the EXIT button when pressed
+    def exit_application(self):
+        # Handle serial thread when EXIT button is pressed to not run on background.
+        self.serial_thread.stop()
+        self.destroy()
 
 if __name__ == "__main__":
     # Replace "x" in "COMx" with the actual port, e.g., "COM3"

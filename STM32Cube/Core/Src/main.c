@@ -25,6 +25,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <string.h>
+#include <stdlib.h>
 #include "Servo.h"
 #include "stdlib.h"
 #include "stm32f7xx_hal.h"
@@ -54,24 +56,32 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+
 float tx_us = 0;     // Time in microseconds
-float dx_cm = 0;     // Distance for sensor 1 in centimeters
-float dx_cm2 = 0;     // Distance for sensor 2 in centimeters
-float position = 0.00; // Position of the ball
+int dx_cm = 0;     // Distance for sensor 1 in centimeters
+int dx_cm2 = 0;     // Distance for sensor 2 in centimeters
+int position = 0.00; // Position of the ball
 int setP = 25;
+
 unsigned char character;
 unsigned int user_len= 2;
 unsigned int i = 0;
-char text[1];
 char num;
 
+// Components //
+
+// Sensors
 struct us_sensor_str distance_sensor;
 struct us_sensor_str distance_sensor2;
 
-
+// Servos
 SERVO_Handle_TypeDef hservo1 = { .PwmOut = PWM_INIT_HANDLE(&htim9, TIM_CHANNEL_1) };
+
+// Buffers //
+char position_buffer[5];
 uint8_t tx_buffer[4];
 const int tx_msg_len = 3;
+char text[1];
 
 
 
@@ -149,9 +159,10 @@ int main(void)
   hc_sr04_init(&distance_sensor, &htim1, &htim2, TIM_CHANNEL_3);
   hc_sr04_init(&distance_sensor2, &htim3, &htim2, TIM_CHANNEL_3);
 
+
   SERVO_Init(&hservo1);
   SERVO_WritePosition(&hservo1, 130.0f);
- HAL_UART_Receive_IT(&huart3, tx_buffer, tx_msg_len);
+  HAL_UART_Receive_IT(&huart3, tx_buffer, tx_msg_len);
 
 
  //LCD constant display - Position, Set Position
@@ -173,8 +184,10 @@ int main(void)
 //  __lcd_i2c_write_command(&hlcd3, LCD_OPT_B);
   LCD_I2C_printDecInt(&hlcd3, setP);
 
-  HAL_UART_Receive_IT(&huart3, &character, 1);
-  KEYPAD_MainLoop();
+ // HAL_UART_Receive_IT(&huart3, &character, 1);
+  //KEYPAD_MainLoop();
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -184,7 +197,14 @@ int main(void)
 	  //PID(&hservo1,position,setP);
 
 	  LCD_I2C_SetCursor(&hlcd3, 0, 10);
-	  LCD_I2C_printDecInt(&hlcd3, (int)position);
+	  LCD_I2C_printDecInt(&hlcd3, position);
+
+	  // Convert position into string
+	  sprintf(position_buffer, "%d\r\n", position);
+
+	  // Transmit position through UART
+	   HAL_UART_Transmit(&huart3, (uint8_t*)position_buffer, strlen(position_buffer), HAL_MAX_DELAY);
+
 
 	 // LCD_I2C_printStr(&hlcd3, text);
 	  HAL_Delay(100);

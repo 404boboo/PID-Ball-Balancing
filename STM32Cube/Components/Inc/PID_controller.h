@@ -19,16 +19,21 @@
 #include "stm32f7xx_hal.h"
 #include "Servo.h"
 
-/*---------------------------------------------------------------*/
+/* Public typedef ------------------------------------------------------------*/
 
-/*Defines and variables------------------------------------------*/
+/* Public define -------------------------------------------------------------*/
 
+/* Public macro --------------------------------------------------------------*/
+
+/* Public variables ----------------------------------------------------------*/
 extern double kp;
 extern double ki;
 extern double kd;
 extern int setP;
 
-void PID(SERVO_Handle_TypeDef* servo,float Position,float SetP);
+/* Public function prototypes ------------------------------------------------*/
+
+void PID(SERVO_Handle_TypeDef* servo, int Position, int SetP);
 
 
 #endif /* INC_PID_CONTROLLER_H_ */

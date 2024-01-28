@@ -31,9 +31,9 @@ uint32_t hc_sr04_convert_us_to_cm(uint32_t distance_us)
 {
 	return (distance_us / HC_SR04_US_TO_CM_CONVERTER);
 }
-float CalulatePosition(float dis1, float dis2)
+int CalulatePosition(int dis1, int dis2)
 {
- float position = 0;
+ int position = 0;
 if (dis1<29)
 	position = dis1;
 

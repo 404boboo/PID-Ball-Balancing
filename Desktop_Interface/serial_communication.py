@@ -15,7 +15,7 @@ class SerialCommunication:
         self.serial_port.write(command.encode())
 
     def receive_data(self):
-        return self.serial_port.readline().decode().strip()
+        return self.serial_port.readline(4).decode().strip()
 
     def close(self):
         self._stop_event.set()

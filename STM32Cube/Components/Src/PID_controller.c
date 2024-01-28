@@ -9,14 +9,29 @@
   *
   ******************************************************************************
   */
+
+/* Public includes -----------------------------------------------------------*/
 #include "PID_controller.h"
 #include "hcsr04_sensor.h"
 
-double kp = 10;
-double ki = 0.038;
-double kd = 500;
+/* Public typedef ------------------------------------------------------------*/
 
-void PID(SERVO_Handle_TypeDef* servo,float Position,float SetP)
+/* Public define -------------------------------------------------------------*/
+
+/* Public macro --------------------------------------------------------------*/
+
+/* Public variables ----------------------------------------------------------*/
+double kp = 3.2;
+double ki = 0.03;
+double kd = 7200;
+/* Private variables ---------------------------------------------------------*/
+
+/* Public function prototypes ------------------------------------------------*/
+
+/* Private functions ---------------------------------------------------------*/
+
+/* Public function prototypes ------------------------------------------------*/
+void PID(SERVO_Handle_TypeDef* servo, int Position, int SetP)
 {
 
     static double priError = 0;

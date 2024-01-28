@@ -99,12 +99,7 @@ void __lcd_i2c_write_data(LCD_I2C_HandleTypeDef* hlcd, uint8_t data)
 {
   __lcd_i2c_write(hlcd, LCD_DATA_REG, data);
 }
-///@}
 
-/** @name LCD_I2C_PubFcn
- *  LCD I2C public functions
- */
-///@{
 
 /**
  * @brief LCD initialization procedure.
@@ -133,6 +128,12 @@ void LCD_I2C_Init(LCD_I2C_HandleTypeDef* hlcd)
   __lcd_i2c_write_command(hlcd, LCD_DISPLAY_ON_OFF_CONTROL | LCD_OPT_D); // LCD on, Cursor off, On blink
   __lcd_i2c_write_command(hlcd, LCD_ENTRY_MODE_SET | LCD_OPT_INC);       // Cursor increment on
 }
+/**
+ * @brief Write custom character
+ * @param[in] hlcd   : LCD custom character handler with I2C interface
+ * @return None
+ */
+
 
 void LCD_I2C_printCustomChar(LCD_I2C_HandleTypeDef* hlcd, uint8_t code) {
   // Assuming __lcd_i2c_write_data allows sending custom character code directly
@@ -258,11 +259,6 @@ int mapToRange(float input) {
 
 
 
-// ...
-
-// Function to pad the string with zeros at the beginning
 
 
 #endif
-
-///@}

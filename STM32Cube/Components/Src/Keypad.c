@@ -75,8 +75,7 @@ void KEYPAD_MainLoop(void)
     int valuesReceived = 0;
     KEYPAD_Handle_TypeDef hkeypad = KEYPAD_4x4_INIT_HANDLE(KEYPAD);
 
-    while (1)
-    {
+
         if ((c = KEYPAD_GetKey(&hkeypad, 0)) != '\0')
         {
             KeypadBuffer[valuesReceived] = c;
@@ -93,14 +92,11 @@ void KEYPAD_MainLoop(void)
                 memset(KeypadBuffer, 0, sizeof(KeypadBuffer));
             }
         }
-    }
 }
 
-/**
-  * @}
-  */
 
-/************************ (C) COPYRIGHT <year> <author> *****END OF FILE****/
+
+/*****END OF FILE****/
 
 
 

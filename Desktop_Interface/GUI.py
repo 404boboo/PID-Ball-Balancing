@@ -138,6 +138,6 @@ class BallBalanceGUI(tk.Tk):
 
 if __name__ == "__main__":
     # Replace "x" in "COMx" with the actual port, e.g., "COM3"
-    serial_comm = SerialCommunication("COM3", 9600)
+    serial_comm = SerialCommunication("COM7", 115200)
     app = BallBalanceGUI(serial_comm)
     app.mainloop()

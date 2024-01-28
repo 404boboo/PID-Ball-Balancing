@@ -62,7 +62,7 @@ uint32_t hc_sr04_convert_us_to_cm(uint32_t distance_us);
 *@param:
 *@retval: None
 */
-float CalulatePosition(float dis1, float dis2);
+int CalulatePosition(int dis1, int dis2);
 
 #ifdef __cplusplus
 }

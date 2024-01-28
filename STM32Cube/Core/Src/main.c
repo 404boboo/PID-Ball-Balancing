@@ -32,6 +32,7 @@
 #include "PID_controller.h"
 #include "lcd.h"
 #include "lcd_config.h"
+#include "Keypad.h"
 
 /* USER CODE END Includes */
 
@@ -173,6 +174,7 @@ int main(void)
   LCD_I2C_printDecInt(&hlcd3, setP);
 
   HAL_UART_Receive_IT(&huart3, &character, 1);
+  KEYPAD_MainLoop();
   /* USER CODE END 2 */
 
   /* Infinite loop */

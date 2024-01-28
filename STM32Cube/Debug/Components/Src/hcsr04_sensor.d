@@ -1,5 +1,5 @@
 Components/Src/hcsr04_sensor.o: ../Components/Src/hcsr04_sensor.c \
- D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h \
+ D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
  ../Core/Inc/stm32f7xx_hal_conf.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h \
@@ -30,7 +30,7 @@ Components/Src/hcsr04_sensor.o: ../Components/Src/hcsr04_sensor.c \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
-D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h:
+D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h:

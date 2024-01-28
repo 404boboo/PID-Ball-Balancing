@@ -1,6 +1,6 @@
 Components/Src/PID_controller.o: ../Components/Src/PID_controller.c \
- D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/PID_controller.h \
- D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h \
+ D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/PID_controller.h \
+ D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
  ../Core/Inc/stm32f7xx_hal_conf.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h \
@@ -31,11 +31,11 @@ Components/Src/PID_controller.o: ../Components/Src/PID_controller.c \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h \
- D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/Servo.h \
- D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/pwm.h \
- D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h
-D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/PID_controller.h:
-D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h:
+ D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/Servo.h \
+ D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/pwm.h \
+ D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h
+D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/PID_controller.h:
+D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h:
@@ -66,6 +66,6 @@ D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Comp
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h:
-D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/Servo.h:
-D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/pwm.h:
-D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h:
+D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/Servo.h:
+D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/pwm.h:
+D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/hcsr04_sensor.h:

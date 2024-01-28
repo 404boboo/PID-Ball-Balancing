@@ -1,5 +1,8 @@
+"./Components/Src/Keypad.o"
 "./Components/Src/PID_controller.o"
 "./Components/Src/Servo.o"
+"./Components/Src/btn.o"
+"./Components/Src/dio.o"
 "./Components/Src/hcsr04_sensor.o"
 "./Components/Src/lcd.o"
 "./Components/Src/lcd_config.o"

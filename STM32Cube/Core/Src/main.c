@@ -170,8 +170,6 @@ int main(void)
   LCD_I2C_SetCursor(&hlcd3, 1, 14);
   LCD_I2C_printStr(&hlcd3, "cm");
 
-  LCD_I2C_SetCursor(&hlcd3, 1, 11);
-  LCD_I2C_printDecInt(&hlcd3, setP);
   KEYPAD_Handle_TypeDef hkeypad = KEYPAD_4x4_INIT_HANDLE(KEYPAD);
 
   /* USER CODE END 2 */
@@ -197,6 +195,10 @@ int main(void)
 
 	  // Transmit position through UART
 	   HAL_UART_Transmit(&huart3, (uint8_t*)position_buffer, strlen(position_buffer), 100);
+
+	   //Displays current setP
+	   LCD_I2C_SetCursor(&hlcd3, 1, 11);
+	     LCD_I2C_printDecInt(&hlcd3, setP);
 
 	  HAL_Delay(100);
 

@@ -39,13 +39,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_macro  00028e4e  00000000  00000000  0003f380  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0001c8a7  00000000  00000000  000681ce  2**0
+ 18 .debug_line   0001c8b1  00000000  00000000  000681ce  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000f33a7  00000000  00000000  00084a75  2**0
+ 19 .debug_str    000f33a7  00000000  00000000  00084a7f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_frame  000055a0  00000000  00000000  00177e1c  2**2
+ 20 .debug_frame  000055a0  00000000  00000000  00177e28  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000007a  00000000  00000000  0017d3bc  2**0
+ 21 .debug_line_str 0000007a  00000000  00000000  0017d3c8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -3168,89 +3168,91 @@ int main(void)
  8001b12:	482b      	ldr	r0, [pc, #172]	; (8001bc0 <main+0x150>)
  8001b14:	f7ff fc98 	bl	8001448 <LCD_I2C_printStr>
 
-  LCD_I2C_SetCursor(&hlcd3, 1, 11);
- 8001b18:	220b      	movs	r2, #11
- 8001b1a:	2101      	movs	r1, #1
- 8001b1c:	4828      	ldr	r0, [pc, #160]	; (8001bc0 <main+0x150>)
- 8001b1e:	f7ff fcb3 	bl	8001488 <LCD_I2C_SetCursor>
-  LCD_I2C_printDecInt(&hlcd3, setP);
- 8001b22:	4b2b      	ldr	r3, [pc, #172]	; (8001bd0 <main+0x160>)
- 8001b24:	681b      	ldr	r3, [r3, #0]
- 8001b26:	4619      	mov	r1, r3
- 8001b28:	4825      	ldr	r0, [pc, #148]	; (8001bc0 <main+0x150>)
- 8001b2a:	f7ff fc67 	bl	80013fc <LCD_I2C_printDecInt>
   KEYPAD_Handle_TypeDef hkeypad = KEYPAD_4x4_INIT_HANDLE(KEYPAD);
- 8001b2e:	4a29      	ldr	r2, [pc, #164]	; (8001bd4 <main+0x164>)
- 8001b30:	463b      	mov	r3, r7
- 8001b32:	4611      	mov	r1, r2
- 8001b34:	22e8      	movs	r2, #232	; 0xe8
- 8001b36:	4618      	mov	r0, r3
- 8001b38:	f006 f966 	bl	8007e08 <memcpy>
+ 8001b18:	4a2d      	ldr	r2, [pc, #180]	; (8001bd0 <main+0x160>)
+ 8001b1a:	463b      	mov	r3, r7
+ 8001b1c:	4611      	mov	r1, r2
+ 8001b1e:	22e8      	movs	r2, #232	; 0xe8
+ 8001b20:	4618      	mov	r0, r3
+ 8001b22:	f006 f971 	bl	8007e08 <memcpy>
   /* USER CODE BEGIN WHILE */
   while (1)
   {
 
 	  // Call HAL_UART_Receive_IT to start receiving data
 	   HAL_UART_Receive_IT(&huart3, rxBuffer, 2);
- 8001b3c:	2202      	movs	r2, #2
- 8001b3e:	4926      	ldr	r1, [pc, #152]	; (8001bd8 <main+0x168>)
- 8001b40:	4826      	ldr	r0, [pc, #152]	; (8001bdc <main+0x16c>)
- 8001b42:	f004 fe72 	bl	800682a <HAL_UART_Receive_IT>
+ 8001b26:	2202      	movs	r2, #2
+ 8001b28:	492a      	ldr	r1, [pc, #168]	; (8001bd4 <main+0x164>)
+ 8001b2a:	482b      	ldr	r0, [pc, #172]	; (8001bd8 <main+0x168>)
+ 8001b2c:	f004 fe7d 	bl	800682a <HAL_UART_Receive_IT>
 
 	   PID(&hservo1,position,setP);
- 8001b46:	4b26      	ldr	r3, [pc, #152]	; (8001be0 <main+0x170>)
- 8001b48:	681b      	ldr	r3, [r3, #0]
- 8001b4a:	4a21      	ldr	r2, [pc, #132]	; (8001bd0 <main+0x160>)
- 8001b4c:	6812      	ldr	r2, [r2, #0]
- 8001b4e:	4619      	mov	r1, r3
- 8001b50:	4819      	ldr	r0, [pc, #100]	; (8001bb8 <main+0x148>)
- 8001b52:	f7ff f919 	bl	8000d88 <PID>
+ 8001b30:	4b2a      	ldr	r3, [pc, #168]	; (8001bdc <main+0x16c>)
+ 8001b32:	681b      	ldr	r3, [r3, #0]
+ 8001b34:	4a2a      	ldr	r2, [pc, #168]	; (8001be0 <main+0x170>)
+ 8001b36:	6812      	ldr	r2, [r2, #0]
+ 8001b38:	4619      	mov	r1, r3
+ 8001b3a:	481f      	ldr	r0, [pc, #124]	; (8001bb8 <main+0x148>)
+ 8001b3c:	f7ff f924 	bl	8000d88 <PID>
 	   KEYPAD_Handling(&hkeypad,KeyPad_Buffer, 2,&setP);
- 8001b56:	4638      	mov	r0, r7
- 8001b58:	4b1d      	ldr	r3, [pc, #116]	; (8001bd0 <main+0x160>)
- 8001b5a:	2202      	movs	r2, #2
- 8001b5c:	4921      	ldr	r1, [pc, #132]	; (8001be4 <main+0x174>)
- 8001b5e:	f7ff f8c3 	bl	8000ce8 <KEYPAD_Handling>
+ 8001b40:	4638      	mov	r0, r7
+ 8001b42:	4b27      	ldr	r3, [pc, #156]	; (8001be0 <main+0x170>)
+ 8001b44:	2202      	movs	r2, #2
+ 8001b46:	4927      	ldr	r1, [pc, #156]	; (8001be4 <main+0x174>)
+ 8001b48:	f7ff f8ce 	bl	8000ce8 <KEYPAD_Handling>
 
 
 	  // Send Value of Position to LCD
 	  LCD_I2C_SetCursor(&hlcd3, 0, 10);
- 8001b62:	220a      	movs	r2, #10
- 8001b64:	2100      	movs	r1, #0
- 8001b66:	4816      	ldr	r0, [pc, #88]	; (8001bc0 <main+0x150>)
- 8001b68:	f7ff fc8e 	bl	8001488 <LCD_I2C_SetCursor>
+ 8001b4c:	220a      	movs	r2, #10
+ 8001b4e:	2100      	movs	r1, #0
+ 8001b50:	481b      	ldr	r0, [pc, #108]	; (8001bc0 <main+0x150>)
+ 8001b52:	f7ff fc99 	bl	8001488 <LCD_I2C_SetCursor>
 	  LCD_I2C_printDecInt(&hlcd3, position);
- 8001b6c:	4b1c      	ldr	r3, [pc, #112]	; (8001be0 <main+0x170>)
- 8001b6e:	681b      	ldr	r3, [r3, #0]
- 8001b70:	4619      	mov	r1, r3
- 8001b72:	4813      	ldr	r0, [pc, #76]	; (8001bc0 <main+0x150>)
- 8001b74:	f7ff fc42 	bl	80013fc <LCD_I2C_printDecInt>
+ 8001b56:	4b21      	ldr	r3, [pc, #132]	; (8001bdc <main+0x16c>)
+ 8001b58:	681b      	ldr	r3, [r3, #0]
+ 8001b5a:	4619      	mov	r1, r3
+ 8001b5c:	4818      	ldr	r0, [pc, #96]	; (8001bc0 <main+0x150>)
+ 8001b5e:	f7ff fc4d 	bl	80013fc <LCD_I2C_printDecInt>
 
 	  // Convert position into string
 	  sprintf(position_buffer, "%d\r\n", position);
- 8001b78:	4b19      	ldr	r3, [pc, #100]	; (8001be0 <main+0x170>)
- 8001b7a:	681b      	ldr	r3, [r3, #0]
- 8001b7c:	461a      	mov	r2, r3
- 8001b7e:	491a      	ldr	r1, [pc, #104]	; (8001be8 <main+0x178>)
- 8001b80:	481a      	ldr	r0, [pc, #104]	; (8001bec <main+0x17c>)
- 8001b82:	f006 f8ed 	bl	8007d60 <siprintf>
+ 8001b62:	4b1e      	ldr	r3, [pc, #120]	; (8001bdc <main+0x16c>)
+ 8001b64:	681b      	ldr	r3, [r3, #0]
+ 8001b66:	461a      	mov	r2, r3
+ 8001b68:	491f      	ldr	r1, [pc, #124]	; (8001be8 <main+0x178>)
+ 8001b6a:	4820      	ldr	r0, [pc, #128]	; (8001bec <main+0x17c>)
+ 8001b6c:	f006 f8f8 	bl	8007d60 <siprintf>
 
 	  // Transmit position through UART
 	   HAL_UART_Transmit(&huart3, (uint8_t*)position_buffer, strlen(position_buffer), 100);
- 8001b86:	4819      	ldr	r0, [pc, #100]	; (8001bec <main+0x17c>)
- 8001b88:	f7fe fb42 	bl	8000210 <strlen>
- 8001b8c:	4603      	mov	r3, r0
- 8001b8e:	b29a      	uxth	r2, r3
- 8001b90:	2364      	movs	r3, #100	; 0x64
- 8001b92:	4916      	ldr	r1, [pc, #88]	; (8001bec <main+0x17c>)
- 8001b94:	4811      	ldr	r0, [pc, #68]	; (8001bdc <main+0x16c>)
- 8001b96:	f004 fdc5 	bl	8006724 <HAL_UART_Transmit>
+ 8001b70:	481e      	ldr	r0, [pc, #120]	; (8001bec <main+0x17c>)
+ 8001b72:	f7fe fb4d 	bl	8000210 <strlen>
+ 8001b76:	4603      	mov	r3, r0
+ 8001b78:	b29a      	uxth	r2, r3
+ 8001b7a:	2364      	movs	r3, #100	; 0x64
+ 8001b7c:	491b      	ldr	r1, [pc, #108]	; (8001bec <main+0x17c>)
+ 8001b7e:	4816      	ldr	r0, [pc, #88]	; (8001bd8 <main+0x168>)
+ 8001b80:	f004 fdd0 	bl	8006724 <HAL_UART_Transmit>
+
+	   //Displays current setP
+	   LCD_I2C_SetCursor(&hlcd3, 1, 11);
+ 8001b84:	220b      	movs	r2, #11
+ 8001b86:	2101      	movs	r1, #1
+ 8001b88:	480d      	ldr	r0, [pc, #52]	; (8001bc0 <main+0x150>)
+ 8001b8a:	f7ff fc7d 	bl	8001488 <LCD_I2C_SetCursor>
+	     LCD_I2C_printDecInt(&hlcd3, setP);
+ 8001b8e:	4b14      	ldr	r3, [pc, #80]	; (8001be0 <main+0x170>)
+ 8001b90:	681b      	ldr	r3, [r3, #0]
+ 8001b92:	4619      	mov	r1, r3
+ 8001b94:	480a      	ldr	r0, [pc, #40]	; (8001bc0 <main+0x150>)
+ 8001b96:	f7ff fc31 	bl	80013fc <LCD_I2C_printDecInt>
 
 	  HAL_Delay(100);
  8001b9a:	2064      	movs	r0, #100	; 0x64
  8001b9c:	f000 fe4e 	bl	800283c <HAL_Delay>
 	   HAL_UART_Receive_IT(&huart3, rxBuffer, 2);
- 8001ba0:	e7cc      	b.n	8001b3c <main+0xcc>
+ 8001ba0:	e7c1      	b.n	8001b26 <main+0xb6>
  8001ba2:	bf00      	nop
  8001ba4:	200001b4 	.word	0x200001b4
  8001ba8:	20000168 	.word	0x20000168
@@ -3263,11 +3265,11 @@ int main(void)
  8001bc4:	08008770 	.word	0x08008770
  8001bc8:	0800877c 	.word	0x0800877c
  8001bcc:	08008780 	.word	0x08008780
- 8001bd0:	20000130 	.word	0x20000130
- 8001bd4:	08008794 	.word	0x08008794
- 8001bd8:	20000134 	.word	0x20000134
- 8001bdc:	200002e4 	.word	0x200002e4
- 8001be0:	2000012c 	.word	0x2000012c
+ 8001bd0:	08008794 	.word	0x08008794
+ 8001bd4:	20000134 	.word	0x20000134
+ 8001bd8:	200002e4 	.word	0x200002e4
+ 8001bdc:	2000012c 	.word	0x2000012c
+ 8001be0:	20000130 	.word	0x20000130
  8001be4:	20000138 	.word	0x20000138
  8001be8:	0800878c 	.word	0x0800878c
  8001bec:	2000015c 	.word	0x2000015c

@@ -62,6 +62,8 @@ float dx_cm = 0;     // Distance for sensor 1 in centimeters
 float dx_cm2 = 0;     // Distance for sensor 2 in centimeters
 int position = 0.00; // Position of the ball
 int setP = 0;
+uint8_t rxBuffer[2];
+
 char KeyPad_Buffer[2];
 unsigned char character;
 unsigned int user_len= 2;
@@ -104,10 +106,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   * @param  huart UART handle.
   * @retval None
   */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
 
-}
 /* USER CODE END 0 */
 
 /**
@@ -182,6 +181,8 @@ int main(void)
   while (1)
   {
 
+	  // Call HAL_UART_Receive_IT to start receiving data
+	   HAL_UART_Receive_IT(&huart3, rxBuffer, 2);
 
 	   PID(&hservo1,position,setP);
 	   KEYPAD_Handling(&hkeypad,KeyPad_Buffer, 2,&setP);
@@ -263,6 +264,21 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+//Call back from the terminal for seting the setP
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+	UNUSED(huart);
+    int set_recive = atoi((char*)rxBuffer);
+	if(set_recive >= 10 && set_recive <= 99){
+		setP = set_recive;
+	}
+	else{
+		// Handle the case when set_recive is not a 2-digit number
+	}
+	// Call HAL_UART_Receive_IT again to receive more data
+	    HAL_UART_Receive_IT(huart, rxBuffer, 2);
+	}
+
+
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
 	if(TIM1 == htim->Instance)

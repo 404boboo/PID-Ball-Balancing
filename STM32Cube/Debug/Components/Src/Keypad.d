@@ -1,7 +1,7 @@
 Components/Src/Keypad.o: ../Components/Src/Keypad.c \
- D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/keypad.h \
- D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/btn.h \
- D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/dio.h \
+ D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/keypad.h \
+ D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/btn.h \
+ D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/dio.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
  ../Core/Inc/stm32f7xx_hal_conf.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h \
@@ -33,9 +33,9 @@ Components/Src/Keypad.o: ../Components/Src/Keypad.c \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h \
  ../Core/Inc/gpio.h ../Core/Inc/main.h ../Core/Inc/usart.h
-D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/keypad.h:
-D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/btn.h:
-D:/github/PID-Ball-Balancing/STM32Cube/Components/Inc/dio.h:
+D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/keypad.h:
+D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/btn.h:
+D:/Studia/5th_semester/bondyra_project/project/PID-Ball-Balancing/STM32Cube/Components/Inc/dio.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h:

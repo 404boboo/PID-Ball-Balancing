@@ -1,2 +1,2 @@
 ../Components/Src/Keypad.c:43:6:KEYPAD_GetKey	32	static
-../Components/Src/Keypad.c:71:6:KEYPAD_Handling	32	static
+../Components/Src/Keypad.c:75:6:KEYPAD_Handling	40	static

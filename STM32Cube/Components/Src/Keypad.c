@@ -68,7 +68,11 @@ char KEYPAD_GetKey(KEYPAD_Handle_TypeDef* hkeypad, uint32_t delay)
   * @param  None
   * @retval None
   */
-void KEYPAD_Handling(KEYPAD_Handle_TypeDef* hkeypad, uint8_t KeypadBuffer[], int BufferSize)
+#include <stdlib.h>
+
+#include <stdlib.h>
+
+void KEYPAD_Handling(KEYPAD_Handle_TypeDef* hkeypad, char KeypadBuffer[], int BufferSize, int* result)
 {
     static int valuesReceived = 0;  // Static variable to retain its value across function calls
 
@@ -78,19 +82,32 @@ void KEYPAD_Handling(KEYPAD_Handle_TypeDef* hkeypad, uint8_t KeypadBuffer[], int
 
         if (c != '\0')
         {
-            KeypadBuffer[valuesReceived] = (int)c;
+            KeypadBuffer[valuesReceived] = c;
             valuesReceived++;
 
             // Check if buffer is full
             if (valuesReceived == BufferSize)
             {
+                // Null-terminate the buffer
+                KeypadBuffer[BufferSize] = '\0';
+
+                // Convert the buffer to an integer and store it in the result
+                *result = atoi(KeypadBuffer);
+
                 // Reset the counter
                 valuesReceived = 0;
-            }
 
+                // Clear the KeypadBuffer
+                for (int j = 0; j < BufferSize; j++)
+                {
+                    KeypadBuffer[j] = '\0';
+                }
+            }
         }
     }
 }
+
+
 
 
 /*****END OF FILE****/

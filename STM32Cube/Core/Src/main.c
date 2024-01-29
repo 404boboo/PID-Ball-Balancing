@@ -61,11 +61,12 @@ float tx_us = 0;     // Time in microseconds
 float dx_cm = 0;     // Distance for sensor 1 in centimeters
 float dx_cm2 = 0;     // Distance for sensor 2 in centimeters
 int position = 0.00; // Position of the ball
-int setP = 28;
+int setP = 0;
 char KeyPad_Buffer[2];
 unsigned char character;
 unsigned int user_len= 2;
 unsigned int i = 0;
+int result;
 char num;
 
 // Components //
@@ -180,8 +181,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	 // PID(&hservo1,position,setP);
-	  KEYPAD_Handling(&hkeypad,KeyPad_Buffer, 2);
+
+
+	   PID(&hservo1,position,setP);
+	   KEYPAD_Handling(&hkeypad,KeyPad_Buffer, 2,&setP);
+
 
 	  // Send Value of Position to LCD
 	  LCD_I2C_SetCursor(&hlcd3, 0, 10);
@@ -191,7 +195,7 @@ int main(void)
 	  sprintf(position_buffer, "%d\r\n", position);
 
 	  // Transmit position through UART
-	   HAL_UART_Transmit(&huart3, (uint8_t*)position_buffer, strlen(position_buffer), HAL_MAX_DELAY);
+	   HAL_UART_Transmit(&huart3, (uint8_t*)position_buffer, strlen(position_buffer), 100);
 
 	  HAL_Delay(100);
 

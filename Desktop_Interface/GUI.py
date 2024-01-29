@@ -12,6 +12,7 @@ from threading import Thread, Event
 from serial_communication import SerialCommunication 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
+from logger import Logger
 
 class SerialThread(Thread):
     def __init__(self, serial_port, queue):
@@ -46,6 +47,7 @@ class BallBalanceGUI(tk.Tk):
         self.queue = Queue()
         self.connected = False  # Track connection status
         self.serial_thread = None # Initialize the thread without starting it
+        self.logger = Logger()
 
         self.title("Ball Balancing App")
         self.geometry("1200x750")  # Set the window size
@@ -129,8 +131,13 @@ class BallBalanceGUI(tk.Tk):
         pass
 
     def show_logs(self):
-        #  functionality to show logs
-        pass
+        result = messagebox.askyesno("Save Logs", "Do you want to save the logs?")
+        if result:
+          # Fix the method name to match the Logger class
+         self.logger.save_log()  # Save the log to a CSV file
+         self.logger.save_plot()  # Save the plot to an Image file
+         messagebox.showinfo("Logs Saved", "Logs have been saved successfully.")
+
 
 
     def stop_serial_thread(self):
@@ -187,7 +194,8 @@ class BallBalanceGUI(tk.Tk):
 
         # CHeck if serial connection is established
         if self.connected:
-        # Update Real-time Plot
+        # Update Real-time Plot and Log
+         self.logger.log_data(self.x_data[-1] + 0.1 if self.x_data else 0, position)
          self.x_data.append(self.x_data[-1] + 0.1 if self.x_data else 0)
          self.y_data.append(position)
 
@@ -234,6 +242,8 @@ class BallBalanceGUI(tk.Tk):
             self.connected = False
             self.connect_button.configure(text="Connect")
             messagebox.showinfo("Connection Status", "Disconnected")
+
+
 
 
 if __name__ == "__main__":

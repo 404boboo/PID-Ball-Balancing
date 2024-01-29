@@ -61,8 +61,8 @@ float tx_us = 0;     // Time in microseconds
 float dx_cm = 0;     // Distance for sensor 1 in centimeters
 float dx_cm2 = 0;     // Distance for sensor 2 in centimeters
 int position = 0.00; // Position of the ball
+
 int setP = 0;
-uint8_t rxBuffer[2];
 
 char KeyPad_Buffer[2];
 unsigned char character;
@@ -77,12 +77,15 @@ char num;
 struct us_sensor_str distance_sensor;
 struct us_sensor_str distance_sensor2;
 
+
 // Servos
 SERVO_Handle_TypeDef hservo1 = { .PwmOut = PWM_INIT_HANDLE(&htim9, TIM_CHANNEL_1) };
+
 // Buffers //
+uint8_t rxBuffer[2];      //receive buffer
 char position_buffer[5];
 uint8_t tx_buffer[4];
-const int tx_msg_len = 3;
+const int tx_msg_len = 3;    //user message lenght
 char text[1];
 
 
@@ -158,17 +161,17 @@ int main(void)
  // Start LCD and set up GUI
   LCD_I2C_Init(&hlcd3);
   LCD_I2C_SetCursor(&hlcd3, 0, 0);
-  LCD_I2C_printStr(&hlcd3, "Position: ");
+  LCD_I2C_printStr(&hlcd3, "Position: ");    //Display "Position:" in the first row
 
 
   LCD_I2C_SetCursor(&hlcd3, 0, 13);
-  LCD_I2C_printStr(&hlcd3, "cm");
+  LCD_I2C_printStr(&hlcd3, "cm");            //Display "cm" in the first row
 
   LCD_I2C_SetCursor(&hlcd3, 1, 0);
-  LCD_I2C_printStr(&hlcd3, "Set Point: ");
+  LCD_I2C_printStr(&hlcd3, "Set Point: ");   //Display "cm" in the first row
 
   LCD_I2C_SetCursor(&hlcd3, 1, 14);
-  LCD_I2C_printStr(&hlcd3, "cm");
+  LCD_I2C_printStr(&hlcd3, "cm");            //Display "cm" in the second row
 
   KEYPAD_Handle_TypeDef hkeypad = KEYPAD_4x4_INIT_HANDLE(KEYPAD);
 
@@ -179,8 +182,7 @@ int main(void)
   while (1)
   {
 
-	  // Call HAL_UART_Receive_IT to start receiving data
-	   HAL_UART_Receive_IT(&huart3, rxBuffer, 2);
+	   HAL_UART_Receive_IT(&huart3, rxBuffer, 2);       // Call HAL_UART_Receive_IT is waiting for data
 
 	   PID(&hservo1,position,setP);
 	   KEYPAD_Handling(&hkeypad,KeyPad_Buffer, 2,&setP);
@@ -188,17 +190,17 @@ int main(void)
 
 	  // Send Value of Position to LCD
 	  LCD_I2C_SetCursor(&hlcd3, 0, 10);
-	  LCD_I2C_printDecInt(&hlcd3, position);
+	  LCD_I2C_printDecInt(&hlcd3, position);          //This is displaying current position and it is changing depending on sensors data
 
 	  // Convert position into string
 	  sprintf(position_buffer, "%d\r\n", position);
 
 	  // Transmit position through UART
-	   HAL_UART_Transmit(&huart3, (uint8_t*)position_buffer, strlen(position_buffer), 100);
+	  HAL_UART_Transmit(&huart3, (uint8_t*)position_buffer, strlen(position_buffer), 100);
 
 	   //Displays current setP
-	   LCD_I2C_SetCursor(&hlcd3, 1, 11);
-	     LCD_I2C_printDecInt(&hlcd3, setP);
+	  LCD_I2C_SetCursor(&hlcd3, 1, 11);
+	  LCD_I2C_printDecInt(&hlcd3, setP);       //Displaying surrent setP, you can change the value of it it from terminal or keypad
 
 	  HAL_Delay(100);
 
@@ -266,18 +268,19 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
 //Call back from the terminal for seting the setP
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+
 	UNUSED(huart);
-    int set_recive = atoi((char*)rxBuffer);
-	if(set_recive >= 10 && set_recive <= 99){
+	int set_recive = atoi((char*)rxBuffer);
+
+	if(set_recive >= 10 && set_recive <= 99)
 		setP = set_recive;
-	}
-	else{
-		// Handle the case when set_recive is not a 2-digit number
-	}
-	// Call HAL_UART_Receive_IT again to receive more data
-	    HAL_UART_Receive_IT(huart, rxBuffer, 2);
+
+	else   // Handle the case when set_recive is not a 2-digit number
+
+	    HAL_UART_Receive_IT(huart, rxBuffer, 2);     // Call HAL_UART_Receive_IT again to receive more data
 	}
 
 
